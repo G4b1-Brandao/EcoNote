@@ -1,0 +1,96 @@
+{% extends 'projeto/base.html' %}
+{% load static %}
+
+{% block assunto %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/cadastro.css' %}">
+{% endblock %}
+
+{% block titulo %}Cadastro{% endblock %}
+
+{% block conteudo %}
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand navbar-font" href="#">EcoNote</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="d-flex justify-content-center">
+  <div id="main-container">
+    <h1>Cadastre-se</h1>
+
+    <form method="POST">
+      {% csrf_token %}
+
+      <select name="tipo_usuario" id="tipo_usuario" required onchange="exibirCampos()">
+        <option value="">Selecione</option>
+        <option value="aluno">Aluno</option>
+        <option value="professor">Professor</option>
+      </select>
+
+      <input type="text" name="nome" placeholder="Nome" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="text" name="matricula" placeholder="Matrícula" required>
+
+    <div id="campo_curso" style="display: none;">
+  <select name="curso">
+    <option value="" disabled selected>Selecione seu curso</option>
+
+    <!-- Cursos Técnicos -->
+    <optgroup label="Cursos Técnicos">
+      <option value="Técnico em Aquicultura">Técnico em Aquicultura</option>
+      <option value="Técnico em Eventos">Técnico em Eventos</option>
+      <option value="Técnico em Guia de Turismo">Técnico em Guia de Turismo</option>
+      <option value="Técnico em Informática">Técnico em Informática</option>
+      <option value="Técnico em Química">Técnico em Química</option>
+    </optgroup>
+
+    <!-- Cursos Superiores -->
+    <optgroup label="Cursos Superiores">
+      <option value="Ciência da Computação">Bacharelado em Ciência da Computação</option>
+      <option value="Engenharia de Aquicultura">Engenharia de Aquicultura</option>
+      <option value="Licenciatura em Química">Licenciatura em Química</option>
+      <option value="Tecnologia em Hotelaria">Tecnologia em Hotelaria</option>
+    </optgroup>
+  </select>
+</div>
+
+      <input type="password" name="senha" placeholder="Senha" required>
+
+      {% if messages %}
+  <div class="alert alert-danger mt-2 w-100">
+    {% for message in messages %}
+      <p class="mb-0">{{ message }}</p>
+    {% endfor %}
+  </div>
+{% endif %}
+
+
+      <button type="submit">Cadastrar</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  function exibirCampos() {
+    const tipo = document.getElementById("tipo_usuario").value;
+    const campoCurso = document.getElementById("campo_curso");
+
+    if (tipo === "aluno") {
+      campoCurso.style.display = "block";
+    } else {
+      campoCurso.style.display = "none";
+    }
+  }
+</script>
+
+{% endblock %}

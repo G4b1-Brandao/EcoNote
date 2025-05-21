@@ -1,0 +1,112 @@
+{% extends 'projeto/base.html' %}
+
+{% load static %}
+
+{% block assunto %}
+    <link rel="stylesheet" type="text/css"  href="{% static 'css/style.css' %}">
+{% endblock %}
+
+{% block titulo %}EcoNote{% endblock %}
+
+{% block conteudo %}
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand navbar-font" href="#">EcoNote</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'cadastro' %}">Cadastre-se</a>
+                </li>
+                <li class="nav-item">
+                   <a class="nav-link active" aria-current="page" href="{% url 'login' %}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#serviços">Serviços</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#contato">Entre em contato</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<header id="topo">
+    <h1>Empréstimos de Notebooks</h1>
+    <p>
+        Sabemos que, na graduação, ter acesso a um notebook pode ser decisivo para acompanhar aulas,
+        realizar pesquisas e entregar trabalhos com qualidade. Pensando nisso, desenvolvemos esta plataforma
+        para facilitar o empréstimo de notebooks entre estudantes. Aqui, você encontra praticidade, inclusão
+        digital e o apoio necessário para continuar sua trajetória acadêmica com mais autonomia e igualdade
+        de oportunidades.
+    </p>
+</header>
+
+<section id="sobre">
+    <h2>Sobre</h2>
+    <p>
+        Nosso projeto de empréstimo de notebooks tem como objetivo principal apoiar estudantes no seu percurso
+        acadêmico. Em um cenário onde a tecnologia é cada vez mais essencial, oferecemos uma alternativa
+        acessível para quem precisa de um dispositivo para estudar, pesquisar ou participar de atividades online.
+        Além de promover a inclusão digital, nossa iniciativa busca reduzir desigualdades e incentivar o uso
+        consciente e sustentável dos recursos tecnológicos disponíveis.
+    </p>
+</section>
+
+<section id="serviços">
+    <h2>Serviços</h2>
+
+    <div>
+        <img src="{% static 'img/pc1.png' %}" alt="Notebook Estudo" width="550" height="340">
+        <h3>Notebook para Estudos</h3>
+        <p>
+            Disponibilizamos notebooks básicos ideais para pesquisas, produção de textos e uso de ferramentas
+            acadêmicas essenciais.
+        </p>
+    </div>
+
+    <div>
+        <img src="{% static 'img/pc2.png' %}" alt="Notebook para programação" width="590" height="340">
+        <h3>Notebook para Programação</h3>
+        <p>
+            Modelos com bom desempenho para estudantes de tecnologia que precisam rodar ambientes de desenvolvimento
+            e compiladores.
+        </p>
+    </div>
+
+    <div>
+        <img src="{% static 'img/pc3.png' %}" alt="Reciclagem" width="600" height="360">
+        <h3>Reciclagem de Notebooks</h3>
+        <p>
+            Recebemos notebooks usados e damos a eles o destino correto por meio de processos de reciclagem
+            responsáveis. Contribua com o meio ambiente descartando seu equipamento de forma segura e sustentável
+            conosco.
+        </p>
+    </div>
+</section>
+
+<section id="contato">
+    <h2>Contato</h2>
+    <p>Tem algum notebook parado e deseja doar?</p>
+    <p>Entre em contato com a gente!</p>
+
+    <div>
+        <img src="{% static 'img/tel.png' %}" alt="telefone">
+        <p><a href="tel:40028922">4002-8922</a></p>
+    </div>
+
+    <div>
+        <img src="{% static 'img/mail.png' %}" alt="email">
+        <p><a href="mailto:econote@gmail.com">econote@gmail.com</a></p>
+    </div>
+
+    <footer>
+        <a href="#topo">VOLTAR</a>
+        <p>Desenvolvido por Ana Gabrielle, Marina Sena, Victor Souza e Paulo Henrique</p>
+    </footer>
+</section>
+{% endblock %}

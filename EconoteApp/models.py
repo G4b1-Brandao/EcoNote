@@ -34,7 +34,7 @@ class Aluno(models.Model):
 # --------------------------------------------
 class Professor(models.Model):
     perfil = models.OneToOneField(PerfilUsuario, on_delete=models.CASCADE)
-    matricula = models.CharField(max_length=20, unique=True)
+    SIAPE = models.CharField(max_length=20, unique=True)
 
     def __str__(self):
         return f"{self.perfil.user.get_full_name()} - Professor"

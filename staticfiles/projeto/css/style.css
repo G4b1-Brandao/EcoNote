@@ -1,8 +1,40 @@
-a {
+/* ============================
+   RESET E BASE GLOBAL
+============================= */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: Nunito, sans-serif;
+  color: #1c1c1c;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  background-size: 100%;
+  position: relative;
+}
+
+a, a1 {
   text-decoration: none;
+  color: white;
   font-family: sans-serif;
-  color: black;
   padding: 6px;
+  font-size: 17px;
+}
+
+h1, h2, h3 {
+  font-family: Asap, sans-serif;
+  color: #000000;
+}
+
+/* ============================
+   NAVBAR E DROPDOWN
+============================= */
+.navbar {
+  background-color: #353839;
+}
+
+.navbar-font {
+  font-family: Yellowtail;
+  font-size: 30px;
 }
 
 .nav-itemdropdown {
@@ -26,51 +58,55 @@ a {
   border-radius: 4px;
 }
 
-body {
-  font-family: Nunito, sans-serif;
-  color: #1c1c1c;
-  left: 0;
-  margin: 0;
-  position: relative;
-}
-
-h1, h2, h3 {
-  font-family: Asap, sans-serif;
-  color: #000000;
-}
-
-.navbar {
-  background-color: #353839;
-}
-
-.navbar-font {
-  font-family: Yellowtail;
-  font-size: 30px;
-}
-
+/* ============================
+   HEADER
+============================= */
 header {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-image: url("../img/fundo.jpg");
+  background-image: url(https://i.postimg.cc/CxVNkNgg/fundo.png);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  color: #FFFFFF;
   text-align: center;
+  color: #FFFFFF;
   padding: 20px;
   height: 60vh;
   justify-content: center;
+  z-index: 1;
+  overflow: hidden;
+}
+
+header::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 0;
+}
+
+header h1, header p {
+  position: relative;
+  z-index: 1;
 }
 
 header h1 {
+  font-size: 2.5rem;
   color: #FFFFFF;
 }
 
 header p {
   margin-bottom: 2em;
+  font-size: 1.3rem;
+  line-height: 1.5;
 }
 
+/* ============================
+   SEÇÕES PRINCIPAIS
+============================= */
 #card {
   margin: 10px;
 }
@@ -79,12 +115,14 @@ header p {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10px 10px 20px 20px;
+  justify-content: center;
+  padding: 10px 20px;
   background-color: #353839;
   color: #FFFFFF;
   height: 30vh;
-  justify-content: center;
   min-height: 250px;
+  font-size: 1.1rem;
+  text-align: center;
 }
 
 #sobre h2 {
@@ -98,81 +136,126 @@ header p {
 
 #serviços {
   display: flex;
-  flex-direction: row;
   flex-wrap: wrap;
-  align-items: flex-start;
-  max-width: 1000px;
+  justify-content: center;
+  gap: 40px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 30px;
 }
 
 #serviços h2 {
-  text-align: center;
   width: 100%;
+  text-align: center;
+  font-size: 2.7rem;
 }
 
-#serviços div {
-  flex-grow: 1;
-  flex-basis: 150px;
-  padding: 0 10px;
+.servico-card {
+  background-color: #f5f5f5;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  margin-top: 10px;
+  flex: 1 1 350px;
+  max-width: 500px;
+  box-sizing: border-box;
 }
 
-#fotos {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: center;
-  padding-top: 20px;
+.servico-card img {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 15px;
 }
 
-#fotos h2 {
-  margin-bottom: 20px;
-  width: 100%;
-  text-align: center;
-}
-
-#fotos img {
-  width: 33.333333%;
-}
-
+/* ============================
+   CONTATO
+============================= */
 #contato {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  max-width: 500px;
-  margin: 0 auto;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
   padding: 20px;
 }
 
-#contato h2,
+#contato h2 {
+  width: 100%;
+  font-size: 2.6rem;
+  color: #000000;
+}
+
 #contato p {
   width: 100%;
   color: #000000;
 }
 
+#contato div p a {
+  color: black !important;
+  text-decoration: none;
+}
+
+#contato div p a:hover {
+  text-decoration: underline;
+}
+
+.contato-grupo {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.contato-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px;
+}
+
+.contato-item img {
+  width: 40px;
+  height: auto;
+  margin-bottom: 5px;
+}
+
+/* ============================
+   FOOTER
+============================= */
 footer {
-  text-align: center;
-  padding: 10px;
+  width: 100vw;
   background-color: #353839;
   color: #f0f8ff;
+  padding: 5px 10px;
+  text-align: center;
+  position: relative;
+  left: 0;
+  font-size: 14px;
+}
+
+.footer-info {
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffffff;
+  margin-top: 5px;
 }
 
 footer a {
   text-decoration: none;
-  color:#808080;
+  color: #ffffff;
+  font-weight: 500;
+  display: inline-block;
+  margin-bottom: 3px;
 }
 
-.footer-info {
-  text-align: center;
-}
-
+/* ============================
+   MENU LATERAL
+============================= */
 .menu {
   background: #686868;
   position: fixed;
@@ -202,24 +285,22 @@ footer a {
 
 .icon-close {
   cursor: pointer;
-  padding-right: 30px;
+  padding: 10px 30px 0 0;
   text-align: right;
-  padding-top: 10px;
 }
 
 .icon-close h1 {
-  cursor: pointer;
-  padding-left: 10px;
   color: #fff;
   font-weight: 600;
+  padding-left: 10px;
 }
 
 .icon-menu {
   cursor: pointer;
   font-size: 30px;
   padding: 0 0 25px 25px;
-  text-decoration: none;
   text-align: left;
+  text-decoration: none;
 }
 
 .icon-menu i {
@@ -235,26 +316,16 @@ footer a {
   width: 60px;
   position: absolute;
   right: 50px;
-  top: 0px;
+  top: 0;
 }
 
 .nav-user {
   color: white;
 }
 
-a1 {
-  text-decoration: none;
-  font-size: 25px;
-}
-
-.container img.bike {
-  max-width: 625px;
-  max-height: 625px;
-  width: auto;
-  height: auto;
-  object-fit: fill;
-}
-
+/* ============================
+   RESPONSIVIDADE
+============================= */
 @media screen and (min-width: 768px) {
   nav {
     flex-direction: row;
@@ -264,5 +335,9 @@ a1 {
   nav ul {
     flex-direction: row;
     width: 70%;
+  }
+
+  .contato-grupo {
+    justify-content: center;
   }
 }

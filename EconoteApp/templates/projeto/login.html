@@ -1,7 +1,6 @@
 {% extends 'projeto/base.html' %}
 {% load static %}
 
-
 {% block assunto %}
   <link href="https://fonts.googleapis.com/css2?family=Asap:wght@700&family=Nunito:wght@700&family=Yellowtail&display=swap" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -12,58 +11,79 @@
 {% block titulo %}Login{% endblock %}
 
 {% block conteudo %}
-<nav class="navbar navbar-expand-lg navbar-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand navbar-font" href="#">EcoNote</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-            aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/">Home</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
+<div class="content-wrapper">
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+       <a class="navbar-brand navbar-font" href="{% url 'index' %}">EcoNote</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'cadastro' %}">Cadastre-se</a>
+          </li>
+        </ul>
+         <!-- Logo à direita, encostada na ponta -->
+           <!-- Container da imagem totalmente separado, posicionado à direita -->
+       <!-- Logo destacada à direita -->
+        <div class="d-flex align-items-center ms-auto" style="margin-left: auto; padding-right: 15px;">
+            <img src="{% static 'img/logoif.png' %}" alt="Logo EcoNote" width="60" height="60" class="d-inline-block align-text-top" style="filter: brightness(1.1);">
+        </div>
 
-
-<form action="{% url 'login' %}" method="POST" class="form">
-  {% csrf_token %}
-  <div class="card">
-    <div class="card-top">
-    <img class="imglogin" src="{% static 'img/Econote.png' %}">
-      <h2 class="title">Faça o Login</h2>
+      </div>
     </div>
+  </nav>
 
-    <div class="card-group">
-      <label for="email">Email</label>
-      <input type="text" id="email" name="email" placeholder="Digite seu email" required>
-    </div>
+  <div class="container d-flex justify-content-center align-items-center flex-grow-1 py-4">
+    <form action="{% url 'login' %}" method="POST" class="form">
+      {% csrf_token %}
+      <div class="card">
+        <div class="card-top text-center">
+         <img class="imglogin" src="{% static 'img/teste.png' %}" alt="Logo">
+          <h2 class="title">Faça o Login</h2>
+        </div>
 
-    <div class="card-group">
-      <label for="senha">Senha</label>
-      <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required>
-    </div>
-   {% if messages %}
-  <div class="card-group">
+{% if messages %}
+  <div class="container mt-3">
     {% for message in messages %}
-      <div class="alert alert-danger mt-2 w-100 p-2">{{ message }}</div>
+      <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+      </div>
     {% endfor %}
   </div>
 {% endif %}
 
 
-    <div class="card-group">
-      <label><input type="checkbox" name="lembrar"> Lembre-me</label>
-    </div>
+        <div class="card-group">
+          <label for="email">Email</label>
+          <input type="text" id="email" name="email" placeholder="Digite seu email" required>
+        </div>
 
-    <div class="card-group">
-      <input type="submit" value="ENTRAR">
-    </div>
+        <div class="card-group">
+          <label for="senha">Senha</label>
+          <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required>
+        </div>
+
+        <div class="card-group">
+          <label><input type="checkbox" name="lembrar"> Lembre-me</label>
+        </div>
+
+        <div class="card-group">
+          <input type="submit" value="ENTRAR">
+        </div>
+      </div>
+    </form>
   </div>
-</form>
+</div> <!-- fecha content-wrapper -->
+
+<footer>
+    <div class="footer-info">
+                    IFCE - CAMPUS ARACATI <br>
+         © 2025 EcoNote. Todos os direitos reservados.<br>
+        Desenvolvido por Ana Gabrielle, Marina Sena, Victor Souza e Paulo Henrique
+    </div>
+</footer>
 {% endblock %}

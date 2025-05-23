@@ -2,6 +2,8 @@
 {% load static %}
 
 {% block assunto %}
+  <link href="https://fonts.googleapis.com/css2?family=Asap:wght@700&family=Nunito:wght@700&family=Yellowtail&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="{% static 'css/cadastro.css' %}">
 {% endblock %}
 
@@ -10,87 +12,111 @@
 {% block conteudo %}
 <nav class="navbar navbar-expand-lg navbar-dark">
   <div class="container-fluid">
-    <a class="navbar-brand navbar-font" href="#">EcoNote</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/">Home</a>
-        </li>
-      </ul>
-    </div>
+    <a class="navbar-brand navbar-font" href="{% url 'index' %}">EcoNote</a>
   </div>
+   <!-- Logo à direita, encostada na ponta -->
+           <!-- Container da imagem totalmente separado, posicionado à direita -->
+       <!-- Logo destacada à direita -->
+        <div class="d-flex align-items-center ms-auto" style="margin-left: auto; padding-right: 15px;">
+            <img src="{% static 'img/logoif.png' %}" alt="Logo EcoNote" width="60" height="60" class="d-inline-block align-text-top" style="filter: brightness(1.1);">
+        </div>
+
 </nav>
 
-<div class="d-flex justify-content-center">
-  <div id="main-container">
-    <h1>Cadastre-se</h1>
+<div class="container d-flex justify-content-center mt-5">
+  <form action="{% url 'cadastro' %}" method="POST" class="form">
+    {% csrf_token %}
+    <div class="card">
+      <div class="card-top text-center">
+     <img class="imglogin" src="{% static 'img/teste.png' %}" alt="Logo">
+        <h2 class="title">Faça seu Cadastro</h2>
+      </div>
 
-    <form method="POST">
-      {% csrf_token %}
-
-      <select name="tipo_usuario" id="tipo_usuario" required onchange="exibirCampos()">
-        <option value="">Selecione</option>
-        <option value="aluno">Aluno</option>
-        <option value="professor">Professor</option>
-      </select>
-
-      <input type="text" name="nome" placeholder="Nome" required>
-      <input type="email" name="email" placeholder="Email" required>
-      <input type="text" name="matricula" placeholder="Matrícula" required>
-
-    <div id="campo_curso" style="display: none;">
-  <select name="curso">
-    <option value="" disabled selected>Selecione seu curso</option>
-
-    <!-- Cursos Técnicos -->
-    <optgroup label="Cursos Técnicos">
-      <option value="Técnico em Aquicultura">Técnico em Aquicultura</option>
-      <option value="Técnico em Eventos">Técnico em Eventos</option>
-      <option value="Técnico em Guia de Turismo">Técnico em Guia de Turismo</option>
-      <option value="Técnico em Informática">Técnico em Informática</option>
-      <option value="Técnico em Química">Técnico em Química</option>
-    </optgroup>
-
-    <!-- Cursos Superiores -->
-    <optgroup label="Cursos Superiores">
-      <option value="Ciência da Computação">Bacharelado em Ciência da Computação</option>
-      <option value="Engenharia de Aquicultura">Engenharia de Aquicultura</option>
-      <option value="Licenciatura em Química">Licenciatura em Química</option>
-      <option value="Tecnologia em Hotelaria">Tecnologia em Hotelaria</option>
-    </optgroup>
-  </select>
-</div>
-
-      <input type="password" name="senha" placeholder="Senha" required>
-
-      {% if messages %}
-  <div class="alert alert-danger mt-2 w-100">
+{% if messages %}
+  <div class="container mt-3">
     {% for message in messages %}
-      <p class="mb-0">{{ message }}</p>
+      <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+      </div>
     {% endfor %}
   </div>
 {% endif %}
 
 
-      <button type="submit">Cadastrar</button>
-    </form>
-  </div>
+
+      <div class="card-group">
+        <select name="tipo_usuario" id="tipo_usuario" required onchange="exibirCampos()">
+          <option value="">Selecione</option>
+          <option value="aluno">Aluno</option>
+          <option value="professor">Professor</option>
+        </select>
+      </div>
+
+      <div class="card-group">
+        <label for="nome">Nome</label>
+        <input type="text" name="nome" id="nome" placeholder="Digite seu nome" required>
+      </div>
+
+      <div class="card-group">
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" placeholder="Digite seu email" required>
+      </div>
+
+      <div class="card-group" id="campo_matricula" style="display: none;">
+        <label for="matricula">Matrícula</label>
+        <input type="text" name="matricula" id="matricula" placeholder="Digite sua matrícula">
+      </div>
+
+      <div class="card-group" id="campo_siape" style="display: none;">
+        <label for="siape">SIAPE</label>
+        <input type="text" name="siape" id="siape" placeholder="Digite seu SIAPE">
+      </div>
+
+      <div class="card-group" id="campo_curso" style="display: none;">
+        <label for="curso">Curso</label>
+        <select name="curso" id="curso">
+          <option value="" disabled selected>Selecione seu curso</option>
+          <optgroup label="Cursos Técnicos">
+            <option value="Técnico em Aquicultura">Técnico em Aquicultura</option>
+            <option value="Técnico em Eventos">Técnico em Eventos</option>
+            <option value="Técnico em Guia de Turismo">Técnico em Guia de Turismo</option>
+            <option value="Técnico em Informática">Técnico em Informática</option>
+            <option value="Técnico em Química">Técnico em Química</option>
+          </optgroup>
+          <optgroup label="Cursos Superiores">
+            <option value="Ciência da Computação">Bacharelado em Ciência da Computação</option>
+            <option value="Engenharia de Aquicultura">Engenharia de Aquicultura</option>
+            <option value="Licenciatura em Química">Licenciatura em Química</option>
+            <option value="Tecnologia em Hotelaria">Tecnologia em Hotelaria</option>
+          </optgroup>
+        </select>
+      </div>
+
+      <div class="card-group">
+        <label for="senha">Senha</label>
+        <input type="password" name="senha" id="senha" placeholder="Digite sua senha" required>
+      </div>
+
+      <div class="card-group">
+        <button type="submit">Cadastrar</button>
+      </div>
+    </div>
+  </form>
+ <footer>
+    <div class="footer-info">
+                    IFCE - CAMPUS ARACATI <br>
+         © 2025 EcoNote. Todos os direitos reservados.<br>
+        Desenvolvido por Ana Gabrielle, Marina Sena, Victor Souza e Paulo Henrique
+    </div>
+</footer>
 </div>
 
 <script>
   function exibirCampos() {
     const tipo = document.getElementById("tipo_usuario").value;
-    const campoCurso = document.getElementById("campo_curso");
-
-    if (tipo === "aluno") {
-      campoCurso.style.display = "block";
-    } else {
-      campoCurso.style.display = "none";
-    }
+    document.getElementById("campo_matricula").style.display = tipo === "aluno" ? "block" : "none";
+    document.getElementById("campo_siape").style.display = tipo === "professor" ? "block" : "none";
+    document.getElementById("campo_curso").style.display = tipo === "aluno" ? "block" : "none";
   }
 </script>
-
 {% endblock %}

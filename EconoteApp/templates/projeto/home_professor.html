@@ -1,0 +1,64 @@
+{% extends 'projeto/base.html' %}
+{% load static %}
+
+{% block assunto %}
+<link href="https://fonts.googleapis.com/css2?family=Asap:wght@700&family=Nunito:wght@700&family=Yellowtail&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="{% static 'css/home_aluno.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+{% endblock %}
+
+{% block titulo %}EcoNote - Home Professor{% endblock %}
+
+{% block conteudo %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand navbar-font" href="#">EcoNote</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
+        <li class="nav-item"><a class="nav-link active" href="{% url 'perfil' %}">Perfil</a></li>
+        <li class="nav-item"><a class="nav-link active" href="{% url 'sobre' %}">Sobre</a></li>
+        <li class="nav-item"><a class="nav-link active" href="{% url 'logout' %}">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<main class="main-home">
+  <h2 class="frase-destaque">Olá, {{ request.user.first_name }}! <br><span class="subfrase">O que você gostaria de fazer hoje?</span></h2>
+
+  <div class="menu menu-aluno">
+    <button onclick="location.href='{% url 'cadastro_notebooks' %}'">
+      <div class="card-button-content">
+        <i class="fa-solid fa-laptop"></i><br>
+        <span>Cadastro de Notebooks</span>
+      </div>
+    </button>
+    <button onclick="location.href='{% url 'avaliacao_solicitacao' %}'">
+      <div class="card-button-content">
+        <i class="fa-solid fa-clipboard-check"></i><br>
+        <span>Avaliação de Solicitação</span>
+      </div>
+    </button>
+    <button onclick="location.href='{% url 'indicar_aluno' %}'">
+      <div class="card-button-content">
+        <i class="fa-solid fa-user-plus"></i><br>
+        <span>Indicar Aluno</span>
+      </div>
+    </button>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-info">
+    © 2025 EcoNote. Todos os direitos reservados.<br>
+    Desenvolvido por Ana Gabrielle, Marina Sena, Victor Souza e Paulo Henrique
+  </div>
+</footer>
+{% endblock %}

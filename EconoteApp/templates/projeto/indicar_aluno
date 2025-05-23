@@ -1,0 +1,6 @@
+{% extends 'projeto/base.html' %}
+
+{% block content %}
+  <h1>Cadastro de Notebooks</h1>
+  <p>Formulário de cadastro de notebooks (em construção).</p>
+{% endblock %}

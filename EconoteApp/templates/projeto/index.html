@@ -1,9 +1,9 @@
 {% extends 'projeto/base.html' %}
-
 {% load static %}
 
 {% block assunto %}
-    <link rel="stylesheet" type="text/css"  href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 {% endblock %}
 
 {% block titulo %}EcoNote{% endblock %}
@@ -11,102 +11,102 @@
 {% block conteudo %}
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container-fluid">
+        <!-- Nome do projeto à esquerda -->
         <a class="navbar-brand navbar-font" href="#">EcoNote</a>
+
+        <!-- Botão do menu para dispositivos móveis -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+
+        <!-- Itens da navbar -->
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{% url 'cadastro' %}">Cadastre-se</a>
-                </li>
-                <li class="nav-item">
-                   <a class="nav-link active" aria-current="page" href="{% url 'login' %}">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#serviços">Serviços</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#contato">Entre em contato</a>
-                </li>
+            <!-- Links à esquerda -->
+            <ul class="navbar-nav mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link active" href="{% url 'cadastro' %}">Cadastre-se</a></li>
+                <li class="nav-item"><a class="nav-link active" href="{% url 'login' %}">Login</a></li>
+                <li class="nav-item"><a class="nav-link" href="#serviços">Serviços</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contato">Entre em contato</a></li>
             </ul>
+
+            <!-- Logo à direita, encostada na ponta -->
+           <!-- Container da imagem totalmente separado, posicionado à direita -->
+       <!-- Logo destacada à direita -->
+        <div class="d-flex align-items-center ms-auto" style="margin-left: auto; padding-right: 15px;">
+            <img src="{% static 'img/logoif.png' %}" alt="Logo EcoNote" width="60" height="60" class="d-inline-block align-text-top" style="filter: brightness(1.1);">
+        </div>
+
+
         </div>
     </div>
 </nav>
 
 <header id="topo">
-    <h1>Empréstimos de Notebooks</h1>
+    <h1>Pra que serve o <strong>EcoNote?</strong></h1>
     <p>
-        Sabemos que, na graduação, ter acesso a um notebook pode ser decisivo para acompanhar aulas,
-        realizar pesquisas e entregar trabalhos com qualidade. Pensando nisso, desenvolvemos esta plataforma
-        para facilitar o empréstimo de notebooks entre estudantes. Aqui, você encontra praticidade, inclusão
-        digital e o apoio necessário para continuar sua trajetória acadêmica com mais autonomia e igualdade
-        de oportunidades.
+        Sabemos que, na graduação, ter acesso a um notebook pode ser decisivo para acompanhar aulas, realizar pesquisas e entregar trabalhos com qualidade.<br>
+        Pensando nisso, desenvolvemos esta plataforma para facilitar o empréstimo de notebooks para estudantes do <strong>IFCE - Campus Aracati</strong>.
     </p>
 </header>
 
 <section id="sobre">
     <h2>Sobre</h2>
     <p>
-        Nosso projeto de empréstimo de notebooks tem como objetivo principal apoiar estudantes no seu percurso
-        acadêmico. Em um cenário onde a tecnologia é cada vez mais essencial, oferecemos uma alternativa
-        acessível para quem precisa de um dispositivo para estudar, pesquisar ou participar de atividades online.
-        Além de promover a inclusão digital, nossa iniciativa busca reduzir desigualdades e incentivar o uso
-        consciente e sustentável dos recursos tecnológicos disponíveis.
+        Este projeto foi idealizado especialmente para a comunidade acadêmica do IFCE Aracati,
+        com o objetivo de apoiar estudantes em sua trajetória educacional. Em um contexto em que a tecnologia é cada vez mais indispensável,
+        oferecemos uma solução acessível para quem precisa de um notebook para estudar, pesquisar ou participar de atividades online.
+        Além de promover a inclusão digital no nosso campus, esta iniciativa também busca reduzir desigualdades
+        e incentivar o uso consciente e sustentável dos recursos tecnológicos disponíveis.
     </p>
 </section>
 
 <section id="serviços">
     <h2>Serviços</h2>
 
-    <div>
+    <div class="servico-card destaque">
         <img src="{% static 'img/pc1.png' %}" alt="Notebook Estudo" width="550" height="340">
         <h3>Notebook para Estudos</h3>
-        <p>
-            Disponibilizamos notebooks básicos ideais para pesquisas, produção de textos e uso de ferramentas
-            acadêmicas essenciais.
-        </p>
+        <p>💡 Ideal para tarefas acadêmicas como <strong>pesquisas, produção de textos</strong> e uso de ferramentas essenciais. Perfeito para quem precisa de praticidade com foco nos estudos.</p>
     </div>
 
-    <div>
+    <div class="servico-card destaque">
         <img src="{% static 'img/pc2.png' %}" alt="Notebook para programação" width="590" height="340">
         <h3>Notebook para Programação</h3>
-        <p>
-            Modelos com bom desempenho para estudantes de tecnologia que precisam rodar ambientes de desenvolvimento
-            e compiladores.
-        </p>
+        <p>💻 Equipados para <strong>ambientes de desenvolvimento</strong>, suportam ferramentas como IDEs e compiladores. Essenciais para estudantes de tecnologia e programação.</p>
     </div>
 
-    <div>
+    <div class="servico-card">
         <img src="{% static 'img/pc3.png' %}" alt="Reciclagem" width="600" height="360">
         <h3>Reciclagem de Notebooks</h3>
-        <p>
-            Recebemos notebooks usados e damos a eles o destino correto por meio de processos de reciclagem
-            responsáveis. Contribua com o meio ambiente descartando seu equipamento de forma segura e sustentável
-            conosco.
-        </p>
+        <p>♻️ Damos destino correto a notebooks usados por meio de <strong>reciclagem responsável</strong>. Colabore com o meio ambiente!</p>
     </div>
 </section>
 
 <section id="contato">
-    <h2>Contato</h2>
-    <p>Tem algum notebook parado e deseja doar?</p>
-    <p>Entre em contato com a gente!</p>
+  <h2>Contato</h2>
+  <p>Tem algum notebook parado e deseja doar?</p>
+  <p>Entre em contato com a gente!</p>
 
-    <div>
-        <img src="{% static 'img/tel.png' %}" alt="telefone">
-        <p><a href="tel:40028922">4002-8922</a></p>
+  <div class="contato-grupo">
+    <div class="contato-item">
+      <img src="{% static 'img/tel.png' %}" alt="telefone">
+      <p><a href="tel:40028922">4002-8922</a></p>
     </div>
 
-    <div>
-        <img src="{% static 'img/mail.png' %}" alt="email">
-        <p><a href="mailto:econote@gmail.com">econote@gmail.com</a></p>
+    <div class="contato-item">
+      <img src="{% static 'img/mail.png' %}" alt="email">
+      <p><a href="mailto:econote@gmail.com">econote@gmail.com</a></p>
     </div>
-
-    <footer>
-        <a href="#topo">VOLTAR</a>
-        <p>Desenvolvido por Ana Gabrielle, Marina Sena, Victor Souza e Paulo Henrique</p>
-    </footer>
+  </div>
 </section>
+
+<footer>
+    <div class="footer-info">
+        <a href="#topo" class="footer-voltar"><i class="fas fa-arrow-up"></i></a><br>
+                    IFCE - CAMPUS ARACATI <br>
+         © 2025 EcoNote. Todos os direitos reservados.<br>
+        Desenvolvido por Ana Gabrielle, Marina Sena, Victor Souza e Paulo Henrique
+    </div>
+</footer>
 {% endblock %}

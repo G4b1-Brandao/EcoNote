@@ -1,0 +1,84 @@
+{% extends 'projeto/base.html' %}
+{% load static %}
+
+{% block assunto %}
+<link href="https://fonts.googleapis.com/css2?family=Asap:wght@700&family=Nunito:wght@700&family=Yellowtail&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="{% static 'css/home_aluno.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+{% endblock %}
+
+{% block titulo %}EcoNote - Home Aluno{% endblock %}
+
+{% block conteudo %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+     <a class="navbar-brand navbar-font" href="{% url 'index' %}">EcoNote</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
+      <!-- Menu à esquerda -->
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link active" href="{% url 'perfil' %}">Perfil</a></li>
+      </ul>
+
+      <!-- Botão Logout à direita -->
+      <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link logout-link" href="#" onclick="confirmarLogout()">Sair</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<main class="main-home">
+  <h2 class="frase-destaque">Olá, {{ request.user.first_name }}! <br><span class="subfrase">O que você gostaria de fazer hoje?</span></h2>
+
+  <div class="menu menu-aluno">
+    <button onclick="location.href='{% url 'solicitar_notebook' %}'">
+      <div class="card-button-content">
+        <i class="fa-solid fa-laptop"></i><br>
+        <span>Solicitar Notebook</span>
+      </div>
+    </button>
+    <button onclick="location.href='{% url 'minhas_solicitacoes' %}'">
+      <div class="card-button-content">
+        <i class="fa-solid fa-clipboard"></i><br>
+        <span>Minhas Solicitações</span>
+      </div>
+    </button>
+    <button onclick="location.href='{% url 'devolucoes_manutencao' %}'">
+      <div class="card-button-content">
+        <i class="fa-solid fa-screwdriver-wrench"></i><br>
+        <span>Devoluções e Manutenção</span>
+      </div>
+    </button>
+    <button onclick="location.href='{% url 'cadastro_notebooks' %}'">
+      <div class="card-button-content">
+        <i class="fa-solid fa-folder-open"></i><br>
+        <span>Cadastrar Notebook</span>
+      </div>
+    </button>
+  </div>
+<script>
+  function confirmarLogout() {
+    if (confirm("Você tem certeza que deseja sair?")) {
+      window.location.href = "{% url 'logout' %}";
+    }
+  }
+</script>
+
+</main>
+
+<footer>
+    <div class="footer-info">
+                    IFCE - CAMPUS ARACATI <br>
+         © 2025 EcoNote. Todos os direitos reservados.<br>
+        Desenvolvido por Ana Gabrielle, Marina Sena, Victor Souza e Paulo Henrique
+    </div>
+</footer>
+{% endblock %}

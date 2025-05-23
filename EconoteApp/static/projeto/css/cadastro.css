@@ -1,135 +1,180 @@
-/* Navbar */
-.navbar {
-  background-color: #353839;
-}
-.navbar-font {
-  font-family: 'Yellowtail', cursive;
-  font-size: 30px;
-}
-
-/* Fundo da página */
 body {
-  background-image: url(https://i.postimg.cc/W3psW7QR/fundo-cadastro.png);
-  background-repeat: no-repeat;
-  background-size: cover;
+    background-image: url(https://i.postimg.cc/vHRQsG22/fundocadastro.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    scrollbar-width: none;
+    overflow-x: hidden;
 }
 
-/* Reset e fonte padrão */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Helvetica, sans-serif;
-  color: black;
-  border: none;
+/* Container geral do formulário */
+.form {
+    width: 400px;
+    margin: auto;
+    padding-top: 5px;
+    background-color: transparent; /* Removido fundo branco para não sobrepor a imagem */
 }
 
-/* Links */
-a {
-  color: #8b4513;
-  text-decoration: none;
+/* Card que contém o formulário */
+.card {
+    box-shadow: 1px 1px 5px #ccc;
+    background-color: #FFFAFA; /* Cor clara aplicada */
+    padding: 30px;
+    border-radius: 5px;
+    margin-bottom: 3rem;
 }
 
-/* Container principal do formulário */
-#main-container {
-  width: 500px;
-  margin: 100px auto;
-  background-color: #808080;
-  border-radius: 10px;
-  padding: 25px;
-  position: relative;
+/* Cabeçalho da card, texto centralizado */
+.card-top {
+    text-align: center;
 }
 
-#main-container h1 {
-  text-align: center;
-  margin-bottom: 25px;
-  font-size: 1.6rem;
+/* Imagem de login */
+.imglogin {
+    border-radius: 60px;
+    width: 150px;
 }
 
-/* Formulário */
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+/* Grupo dos campos (input + label) */
+.card-group {
+    margin-bottom: 10px;
 }
 
-/* Inputs, select e labels */
-input,
-select,
-label {
-  display: block;
-  width: 100%;
-  font-size: 0.9rem;
-  border: 1px solid #ccc;
-  border-radius: 30px;
+/* Título dos campos */
+.title {
+    color: #353839;
 }
 
-label {
-  font-weight: bold;
-  font-size: 0.8rem;
+/* Labels com largura total */
+.card-group > label {
+    display: block;
+    width: 100%;
+    height: 25px;
+    outline: 0;
 }
 
-input,
-select {
-  padding: 10px;
-  margin-bottom: 10px;
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 30px; /* Bordas arredondadas grandes */
-  box-shadow: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-input:focus,
-select:focus {
-  outline: none;
-  border-color: #4b3621;
+/* Inputs e selects com fundo personalizado */
+.card-group > input,
+.card-group > select {
+    border-radius: 5px;
+    outline: 0;
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    background-color: #FFFAFA; /* mesma cor do card */
 }
 
 /* Botão de envio */
-button[type="submit"],
-input[type="submit"] {
-  background-color: #008080;
-  color: #fff;
-  border: none;
-  border-radius: 30px;
+.card-group > input[type="submit"],
+button[type="submit"] {
+    background-image: linear-gradient(to right, grey, black);
+    width: 100%;
+    border-radius: 30px;
+    margin-top: 10px;
+    padding: 15px;
+    color: white;
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #353839;
+}
+
+.d-flex {
+    flex-direction: column;
+    align-items: center;
+    display: flex !important;
+}
+
+.navbar-font {
+    font-family: 'Yellowtail', cursive;
+    font-size: 30px;
+}
+
+/* Cabeçalhos */
+h1, h2, h3 {
+    font-family: 'Asap', sans-serif;
+    color: #000000;
+}
+
+/* Rodapé */
+footer {
+    width: 100vw;
+    background-color: #353839;
+    color: #f0f8ff;
+    padding: 10px 10px;
+    text-align: center;
+    position: relative;
+    left: 0;
+}
+
+.footer-info {
+    font-size: 14px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-top: 10px;
+}
+
+footer a {
+    text-decoration: none;
+    color: #87CEFA;
+    font-weight: 500;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+.alert {
   padding: 10px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
-}
-
-button[type="submit"]:hover,
-input[type="submit"]:hover {
-  background-color: #006666;
-}
-
-/* Link estilo botão */
-p.botao a {
-  margin-top: 15px;
-  display: block;
+  margin: 10px auto;
+  border-radius: 5px;
+  width: 80%;
+  font-weight: bold;
   text-align: center;
-  color: white;
-  background: #008080;
-  border-radius: 20px;
-  padding: 10px 20px;
-  font-size: 0.9rem;
 }
 
-/* Campo Curso (inicialmente escondido) */
-#campo_curso {
-  display: none;
+/* Sucesso: verde claro */
+.alert.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
 }
 
-/* Erros de validação */
-.error-validation {
-  color: #FF1A1A;
-  font-size: 0.8rem;
-  position: absolute;
-  top: 57px;
+/* Erro: vermelho claro */
+.alert.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
 }
 
-/* Template */
-.template {
-  display: none;
+/* Aviso: amarelo */
+.alert.warning {
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+}
+
+/* Informação: azul claro */
+.alert.info {
+  background-color: #d1ecf1;
+  color: #0c5460;
+  border: 1px solid #bee5eb;
+}
+
+
+/* ============================
+   RESPONSIVIDADE
+============================= */
+@media screen and (min-width: 768px) {
+    nav {
+        flex-direction: row;
+        justify-content: space-around;
+    }
+
+    nav ul {
+        flex-direction: row;
+        width: 70%;
+    }
 }

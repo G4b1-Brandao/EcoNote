@@ -16,9 +16,9 @@ body {
 }
 
 /* Card que contém o formulário */
-.card {
+.card{
     box-shadow: 1px 1px 5px #ccc;
-    background-color: #FFFAFA; /* Cor clara aplicada */
+    background-color: #f8f1e4 !important;
     padding: 30px;
     border-radius: 5px;
     margin-bottom: 3rem;
@@ -32,7 +32,7 @@ body {
 /* Imagem de login */
 .imglogin {
     border-radius: 60px;
-    width: 150px;
+    width: 120px;
 }
 
 /* Grupo dos campos (input + label) */
@@ -61,7 +61,7 @@ body {
     width: 100%;
     padding: 8px;
     border: 1px solid #ccc;
-    background-color: #FFFAFA; /* mesma cor do card */
+    background-color: #f8f1e4; /* mesma cor do card */
 }
 
 /* Botão de envio */
@@ -126,43 +126,37 @@ footer a {
     display: inline-block;
     margin-bottom: 10px;
 }
+
 .alert {
-  padding: 10px;
+  padding: 8px 12px;
+  border-radius: 4px;
   margin: 10px auto;
-  border-radius: 5px;
-  width: 80%;
-  font-weight: bold;
+  font-size: 0.88rem;
+  font-weight: 500;
   text-align: center;
+  width: 90%;
+  max-width: 400px;
 }
 
-/* Sucesso: verde claro */
-.alert.success {
+.alert-success {
   background-color: #d4edda;
   color: #155724;
-  border: 1px solid #c3e6cb;
 }
 
-/* Erro: vermelho claro */
-.alert.error {
+.alert-danger {
   background-color: #f8d7da;
   color: #721c24;
-  border: 1px solid #f5c6cb;
 }
 
-/* Aviso: amarelo */
-.alert.warning {
+.alert-warning {
   background-color: #fff3cd;
   color: #856404;
-  border: 1px solid #ffeeba;
 }
 
-/* Informação: azul claro */
-.alert.info {
+.alert-info {
   background-color: #d1ecf1;
   color: #0c5460;
-  border: 1px solid #bee5eb;
 }
-
 
 /* ============================
    RESPONSIVIDADE

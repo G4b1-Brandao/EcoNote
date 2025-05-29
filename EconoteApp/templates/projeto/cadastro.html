@@ -3,7 +3,6 @@
 
 {% block assunto %}
   <link href="https://fonts.googleapis.com/css2?family=Asap:wght@700&family=Nunito:wght@700&family=Yellowtail&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="{% static 'css/cadastro.css' %}">
 {% endblock %}
 
@@ -26,24 +25,29 @@
 <div class="container d-flex justify-content-center mt-5">
   <form action="{% url 'cadastro' %}" method="POST" class="form">
     {% csrf_token %}
+
     <div class="card">
       <div class="card-top text-center">
-     <img class="imglogin" src="{% static 'img/teste.png' %}" alt="Logo">
+     <img class="imglogin" src="{% static 'img/LOGOMODIFICADA.png' %}" alt="Logo">
         <h2 class="title">Faça seu Cadastro</h2>
       </div>
-
-{% if messages %}
-  <div class="container mt-3">
+    {% if messages %}
+  <div class="container mt-2">
     {% for message in messages %}
-      <div class="alert alert-{{ message.tags }}">
-        {{ message }}
-      </div>
+      {% if "error" in message.tags %}
+        <div class="alert alert-danger">{{ message }}</div>
+      {% elif "success" in message.tags %}
+        <div class="alert alert-success">{{ message }}</div>
+      {% elif "warning" in message.tags %}
+        <div class="alert alert-warning">{{ message }}</div>
+      {% elif "info" in message.tags %}
+        <div class="alert alert-info">{{ message }}</div>
+      {% else %}
+        <div class="alert">{{ message }}</div>
+      {% endif %}
     {% endfor %}
   </div>
 {% endif %}
-
-
-
       <div class="card-group">
         <select name="tipo_usuario" id="tipo_usuario" required onchange="exibirCampos()">
           <option value="">Selecione</option>

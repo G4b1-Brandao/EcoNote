@@ -1,9 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# --------------------------------------------
-# Perfil de Usuário (Aluno ou Professor)
-# --------------------------------------------
+
 class PerfilUsuario(models.Model):
     TIPO_USUARIO_CHOICES = [
         ('aluno', 'Aluno'),

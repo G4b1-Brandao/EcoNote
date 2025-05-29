@@ -40,21 +40,25 @@
   <div class="container d-flex justify-content-center align-items-center flex-grow-1 py-4">
     <form action="{% url 'login' %}" method="POST" class="form">
       {% csrf_token %}
+
       <div class="card">
         <div class="card-top text-center">
-         <img class="imglogin" src="{% static 'img/teste.png' %}" alt="Logo">
+         <img class="imglogin" src="{% static 'img/LOGOMODIFICADA.png' %}" alt="Logo">
           <h2 class="title">Faça o Login</h2>
         </div>
 
-{% if messages %}
-  <div class="container mt-3">
+   {% if messages %}
+  <div class="container mt-2">
     {% for message in messages %}
-      <div class="alert alert-{{ message.tags }}">
-        {{ message }}
-      </div>
+      {% if message.tags == "error" %}
+        <div class="alert alert-danger">{{ message }}</div>
+      {% else %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+      {% endif %}
     {% endfor %}
   </div>
 {% endif %}
+
 
 
         <div class="card-group">

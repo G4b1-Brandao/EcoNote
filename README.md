@@ -1,6 +1,6 @@
 # ♻️ EcoNote – Reaproveitamento de notebooks Descartados para o Ambiente Acadêmico  
 
-Este repositório contém o desenvolvimento do projeto **EcoNote**, criado para a disciplina **Análise e Projeto de Sistemas**. O objetivo do projeto é promover a **inclusão digital** através do **reaproveitamento de notebooks e eletrônicos descartados**, conectando doadores a estudantes que necessitam desses equipamentos para seus estudos.  
+Este repositório contém o desenvolvimento do projeto **EcoNote**, criado para a disciplina **Análise e Projeto de Sistemas**. O objetivo do projeto é promover a **inclusão digital** através do **reaproveitamento de notebooks descartados**, conectando doadores a estudantes que necessitam desses equipamentos para seus estudos.  
 
 ## 👥 Equipe  
 - **Engenharia de Requisitos:** Ana Gabrielle  

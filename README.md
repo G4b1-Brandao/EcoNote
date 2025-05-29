@@ -23,7 +23,7 @@ Nosso público-alvo são **estudantes do ensino superior e técnico do IFCE Camp
 > *Obs.: Administradores têm acesso privilegiado para gestão do sistema, mas não realizam cadastro direto na plataforma.*  
 
 
-## 🔧 Tecnologias Utilizadas (a definir)  
+## 🔧 Tecnologias Utilizadas 
 - **Linguagem:** Python  
 - **Framework:** Django  
 - **Frontend:** HTML5, CSS3 (com Flexbox), Templates Django  

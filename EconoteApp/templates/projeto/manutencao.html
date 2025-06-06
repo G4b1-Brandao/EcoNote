@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devoluções e Manutenções - EcoNote</title>
+    <link rel="stylesheet" href="manutencao.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+     <a class="navbar-brand navbar-font" href="{% url 'index' %}">EcoNote</a>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
+      <!-- Menu à esquerda -->
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link active" href="{% url 'perfil' %}">Perfil</a></li>
+      </ul>
+
+      <!-- Botão Logout à direita -->
+      <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link logout-link" href="#" onclick="confirmarLogout()">Sair</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+    <div class="container">
+        <h1>Devoluções e Manutenções</h1>
+
+        <form>
+            <label for="notebook">Selecione o Notebook</label>
+            <select id="notebook" name="notebook" required>
+                <option value="">Selecione</option>
+                <option>Lenovo Ideapad 300 - i7, 8GB, 1TB</option>
+                <option>Dell Latitude - i5, 8GB, 500GB</option>
+                <option>HP Pavilion - i3, 4GB, 256GB SSD</option>
+            </select>
+
+            <label for="tipo">Tipo de Solicitação</label>
+            <select id="tipo" name="tipo" required>
+                <option value="">Selecione</option>
+                <option value="devolucao">Devolução</option>
+                <option value="manutencao">Solicitar Manutenção</option>
+            </select>
+
+            <label for="descricao">Descrição (opcional para devolução)</label>
+            <textarea id="descricao" name="descricao" rows="4" placeholder="Descreva o motivo da devolução ou o problema encontrado..."></textarea>
+
+            <button type="submit">Enviar Solicitação</button>
+        </form>
+    </div>
+    <footer>
+    <div class="footer-info">
+                    IFCE - CAMPUS ARACATI <br>
+         © 2025 EcoNote. Todos os direitos reservados.<br>
+        Desenvolvido por Ana Gabrielle, Marina Sena, Victor Souza e Paulo Henrique
+    </div>
+</footer>
+</body>
+</html>

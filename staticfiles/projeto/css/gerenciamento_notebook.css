@@ -1,0 +1,176 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #ffffff;
+    background-image: url(https://i.postimg.cc/KY8vKPkc/fundo-home-aluno.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Camada escura no modo escuro */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    transition: background 0.5s ease;
+    background: transparent;
+}
+
+body.dark-mode::before {
+    background: rgba(0, 0, 0, 0.4); /* escurece a imagem sem esconder */
+}
+
+/* Navbar */
+.navbar-font {
+    font-family: 'Yellowtail', cursive;
+    font-size: 30px;
+}
+
+/* Conteúdo principal */
+.main-gestao {
+    padding: 2rem;
+    min-height: calc(100vh - 160px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.titulo-gestao {
+    font-size: 2.2rem;
+    color: #1e3a5f;
+    margin-bottom: 2rem;
+    font-family: 'Asap', sans-serif;
+}
+
+.notebook-lista {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.notebook-card {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f7f7f7;
+    border-left: 8px solid #1e3a5f;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.info-notebook h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.5rem;
+    color: #2b2b2b;
+}
+
+.info-notebook p {
+    margin: 0.2rem 0;
+    color: #444;
+    font-size: 1rem;
+}
+
+.acao-notebook {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+}
+
+.botao-validar {
+    background-color: #1e3a5f;
+    color: #fff;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.botao-validar:hover {
+    background-color: #2a5a8d;
+}
+
+footer {
+    background-color: #353839;
+    color: #ffffff;
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+    margin-top: auto;
+}
+
+.footer-info {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .notebook-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .botao-validar {
+        width: 100%;
+    }
+}
+
+/* MODO ESCURO */
+body.dark-mode {
+    background-color: #1c1c1c;
+    background-image: url(https://i.postimg.cc/KY8vKPkc/fundo-home-aluno.png); /* mantém a imagem */
+    color: #f0f0f0;
+}
+
+body.dark-mode .titulo-gestao {
+    color: #c9dfff;
+}
+
+body.dark-mode .notebook-card {
+    background-color: #2a2a2a;
+    border-left-color: #4a90e2;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode .info-notebook h3 {
+    color: #ffffff;
+}
+
+body.dark-mode .info-notebook p {
+    color: #cccccc;
+}
+
+body.dark-mode .botao-validar {
+    background-color: #4a90e2;
+    color: #ffffff;
+}
+
+body.dark-mode .botao-validar:hover {
+    background-color: #357ab8;
+}
+
+body.dark-mode footer {
+    background-color: #111;
+    color: #aaa;
+}

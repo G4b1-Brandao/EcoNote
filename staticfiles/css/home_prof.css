@@ -1,0 +1,151 @@
+/* Reset e corpo da página */
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  background-image: url(https://i.postimg.cc/KY8vKPkc/fundo-home-aluno.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  font-family: 'Nunito', sans-serif;
+}
+
+/* Navbar */
+.navbar-font {
+  font-family: 'Yellowtail', cursive;
+  font-size: 30px;
+}
+
+/* Conteúdo principal */
+main.main-home {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  text-align: center;
+  min-height: calc(100vh - 160px); /* Considera navbar + footer */
+}
+
+/* Título */
+h2.frase-destaque {
+  font-family: 'Asap', sans-serif;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-top: 3rem;
+  text-shadow: 1px 1px 1px #aaa;
+}
+
+h2.frase-destaque .subfrase {
+  display: block;
+  font-weight: normal;
+  font-size: 1.3rem;
+  font-family: 'Nunito', sans-serif;
+  color: #444;
+  margin-top: 0.5rem;
+}
+
+/* Menu de botões estilo card */
+.menu-prof {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.menu-prof button {
+  background-color: #f0f0eb; /* novo tom claro */
+  color: #1e1e1e; /* texto escuro para contraste */
+  padding: 2.5rem 2rem;
+  width: 260px;
+  height: 260px;
+  font-weight: bold;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s, background-color 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+
+.menu-prof button:hover {
+  background-color: #e0e0d6; /* tom um pouco mais escuro no hover */
+  transform: scale(1.07);
+}
+
+/* Conteúdo interno dos botões (ícone e texto) */
+.card-button-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Ícones maiores */
+.card-button-content i {
+  font-size: 3.5rem; /* Ícone grande */
+  margin-bottom: 1rem;
+}
+
+/* Texto maior */
+.card-button-content span {
+  font-size: 1.3rem;
+}
+
+/* Footer */
+footer {
+  background-color: #353839;
+  color: #ffffff;
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  margin-top: auto;
+}
+
+.footer-info {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .menu-aluno {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .menu-aluno button {
+    width: 90%;
+    height: auto;
+    padding: 2rem 1rem;
+  }
+
+  .card-button-content i {
+    font-size: 2.8rem;
+  }
+
+  .card-button-content span {
+    font-size: 1.2rem;
+  }
+}
+
+/* Link de logout discreto */
+.logout-link {
+  color: #ccc;
+  transition: color 0.3s ease;
+  font-weight: 500;
+}
+
+.logout-link:hover {
+  color: #fff;
+  text-decoration: underline;
+}

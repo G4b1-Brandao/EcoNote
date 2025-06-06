@@ -1,6 +1,194 @@
 {% extends 'projeto/base.html' %}
+{% load static %}
 
-{% block content %}
+{% block assunto %}
+<link href="https://fonts.googleapis.com/css2?family=Asap:wght@700&family=Nunito:wght@700&family=Yellowtail&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="{% static 'css/solicitar_notebook.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+{% endblock %}
+
+{% block titulo %}EcoNote - Solicitar notebook{% endblock %}
+
+{% block conteudo %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand navbar-font" href="{% url 'home_aluno' %}">EcoNote</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link active" href="{% url 'home_aluno' %}">Home</a></li>
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item d-flex align-items-center">
+          <button id="toggle-mode" title="Alternar tema" aria-label="Alternar modo" class="btn btn-sm btn-outline-light mr-2">
+            🌙
+          </button>
+          <a class="nav-link logout-link" href="#" onclick="confirmarLogout()">Sair</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container-solicitacao">
   <h1>Solicitar Notebook</h1>
-  <p>Área para solicitação de notebooks.</p>
+
+  <form method="post" enctype="multipart/form-data" class="formulario" novalidate>
+    {% csrf_token %}
+
+    <div class="bloco-esquerda">
+      <label for="nome"><b>Nome do aluno</b></label>
+      <input type="text" id="nome" name="nome" placeholder="Nome Completo" required autocomplete="name">
+
+      <label for="semestre"><b>Semestre Atual</b></label>
+      <input type="text" id="semestre" name="semestre" placeholder="Ex: 2º semestre" required autocomplete="off">
+
+      <label for="historico"><b>Histórico Escolar (PDF)</b></label>
+      <input type="file" id="historico" name="historico" accept="application/pdf" required>
+      <small class="form-text text-muted">Envie apenas arquivos no formato PDF.</small>
+
+      <label for="contexto"><b>Contexto Socioeconômico</b></label>
+      <select id="contexto" name="contexto" required>
+        <option value="" disabled selected>Selecione</option>
+        <option value="Baixo">Baixo</option>
+        <option value="Médio">Médio</option>
+        <option value="Alto">Alto</option>
+      </select>
+
+      <label for="recomendacao"><b>Recomendação de Professor</b></label>
+      <select id="recomendacao" name="recomendacao" required>
+        <option value="" disabled selected>Selecione</option>
+        <option value="Sim">Sim</option>
+        <option value="Não">Não</option>
+      </select>
+
+      <label for="tempo_uso"><b>Por quanto tempo você precisará do notebook?</b></label>
+      <select id="tempo_uso" name="tempo_uso" required>
+        <option value="" disabled selected>Selecione</option>
+        <option value="1_mês">1 mês</option>
+        <option value="2_meses">2 meses</option>
+        <option value="3_meses">3 meses</option>
+        <option value="mais_3_meses">Mais de 3 meses</option>
+      </select>
+    </div>
+
+    <div class="bloco-central">
+      <h2>Justificativa do aluno</h2>
+      <textarea name="justificativa" rows="10" placeholder="Digite aqui sua justificativa..." required></textarea>
+      <button type="submit" class="botao-solicitar mt-3">Solicitar</button>
+    </div>
+
+    <div class="bloco-direita">
+      <h2>Selecione o Equipamento</h2>
+
+      <div class="carousel">
+        <button type="button" class="seta esquerda" aria-label="Equipamento anterior" onclick="anteriorNotebook()">&#8592;</button>
+
+        {% if notebooks_disponiveis %}
+          <div class="equipamento" id="equipamento-container">
+            {% for notebook in notebooks_disponiveis %}
+              <div class="equipamento-item {% if forloop.first %}ativo{% else %}inativo{% endif %}" data-id="{{ notebook.id }}">
+                {% if notebook.imagem %}
+                  <img src="{{ notebook.imagem.url }}" alt="{{ notebook }}">
+                {% else %}
+                  <img src="{% static 'img/notebook_padrao.jpg' %}" alt="Notebook">
+                {% endif %}
+                <p>{{ notebook.marca }} {{ notebook.modelo }}<br>
+                   {{ notebook.processador }}, {{ notebook.memoria_ram }}, {{ notebook.armazenamento }}</p>
+                <span class="disponivel">Disponível</span>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p>Nenhum notebook disponível no momento.</p>
+        {% endif %}
+
+        <button type="button" class="seta direita" aria-label="Próximo equipamento" onclick="proximoNotebook()">&#8594;</button>
+      </div>
+
+      <input type="hidden" name="notebook_selecionado" id="notebook-selecionado">
+      <button type="button" class="botao-selecionar mt-2" onclick="selecionarNotebook()">Selecionar</button>
+    </div>
+  </form>
+</div>
+
+<footer>
+  <div class="footer-info text-center py-3">
+    IFCE - CAMPUS ARACATI <br>
+    © 2025 EcoNote. Todos os direitos reservados.<br>
+    Desenvolvido por Ana Gabrielle, Marina Sena, Victor Souza e Paulo Henrique
+  </div>
+</footer>
+
+<!-- Scripts -->
+<script>
+  function confirmarLogout() {
+    if (confirm("Você tem certeza que deseja sair?")) {
+      window.location.href = "{% url 'logout' %}";
+    }
+  }
+
+  // Alternar modo escuro
+  const toggleBtn = document.getElementById('toggle-mode');
+  const body = document.body;
+  if (localStorage.getItem('theme') === 'dark') {
+    body.classList.add('dark-mode');
+    toggleBtn.textContent = '☀️';
+  }
+  toggleBtn.addEventListener('click', () => {
+    body.classList.toggle('dark-mode');
+    const isDark = body.classList.contains('dark-mode');
+    toggleBtn.textContent = isDark ? '☀️' : '🌙';
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  });
+
+  // Carrossel notebook
+  let atual = 0;
+  const itens = document.querySelectorAll('.equipamento-item');
+
+  function mostrarNotebook(index) {
+    itens.forEach((el, i) => {
+      el.classList.toggle('ativo', i === index);
+      el.classList.toggle('inativo', i !== index);
+    });
+  }
+
+  function proximoNotebook() {
+    atual = (atual + 1) % itens.length;
+    mostrarNotebook(atual);
+  }
+
+  function anteriorNotebook() {
+    atual = (atual - 1 + itens.length) % itens.length;
+    mostrarNotebook(atual);
+  }
+
+  function selecionarNotebook() {
+    const ativo = document.querySelector('.equipamento-item.ativo');
+    if (!ativo) return;
+
+    const selectedId = ativo.getAttribute('data-id');
+    const hiddenField = document.getElementById('notebook-selecionado');
+    hiddenField.value = selectedId;
+
+    alert("Notebook selecionado com sucesso!");
+  }
+</script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+  crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+  integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+  crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+  integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+  crossorigin="anonymous"></script>
 {% endblock %}

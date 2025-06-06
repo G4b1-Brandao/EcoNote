@@ -1,0 +1,167 @@
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  background-image: url(https://i.postimg.cc/KY8vKPkc/fundo-home-aluno.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  font-family: 'Nunito', sans-serif;
+}
+
+/* Navbar */
+.navbar-font {
+    font-family: 'Yellowtail', cursive;
+    font-size: 30px;
+}
+
+.container-cadastro {
+  padding: 30px;
+  margin: 20px auto;
+  max-width: 500px; /* Aumentado para evitar quebra no título */
+  background-color: #fff;
+  border: 1px solid #eee;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  text-align: center; /* Centraliza o título */
+}
+
+.container-cadastro h1 {
+  margin-bottom: 30px;
+  font-family: 'Asap', sans-serif;
+  font-size: 32px;
+  color: #333;
+}
+
+.formulario {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 30px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  margin: 0 auto;
+}
+
+.bloco-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.bloco-form label {
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+.bloco-form input,
+.bloco-form textarea,
+.bloco-form select {
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  outline: none;
+  font-size: 14px;
+}
+
+.bloco-form textarea {
+  resize: vertical;
+}
+
+.botao-cadastrar {
+  margin-top: 25px;
+  padding: 12px;
+  border: none;
+  border-radius: 20px;
+  background-color: #28a745;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  transition: background-color 0.3s;
+  cursor: pointer;
+}
+
+.botao-cadastrar:hover {
+  background-color: #218838;
+}
+
+
+
+footer {
+  text-align: center;
+  padding: 15px;
+  background-color: #212529;
+  color: white;
+  margin-top: 50px;
+}
+
+/* 🌙 Modo escuro  */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: none;
+  z-index: -1;
+  transition: background 0.5s ease;
+}
+
+body.dark-mode::before {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+
+body.dark-mode .container-cadastro {
+  background-color: #1e1e1e;
+  border: 1px solid #333;
+  box-shadow: 2px 2px 10px rgba(255, 255, 255, 0.05);
+  color: #e0e0e0;
+}
+
+
+body.dark-mode  .container-cadastro h1 {
+  margin-bottom: 30px;
+  font-family: 'Asap', sans-serif;
+  font-size: 32px;
+  color: #fff;
+}
+
+body.dark-mode {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+body.dark-mode .formulario {
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode select {
+  background-color: #2c2c2c;
+  color: #ffffff;
+  border: 1px solid #444;
+}
+
+body.dark-mode .botao-cadastrar {
+  background-image: linear-gradient(to right, grey, black);
+  color: white;
+}
+
+body.dark-mode .botao-cadastrar:hover {
+  background-color: #27ae60;
+}
+
+body.dark-mode footer {
+  background-color: #1a1a1a;
+  color: #999;
+}

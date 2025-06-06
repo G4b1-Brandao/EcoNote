@@ -1,0 +1,224 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+html::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('https://i.postimg.cc/KY8vKPkc/fundo-home-aluno.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: -2;
+}
+
+/* camada escura no modo escuro */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background: transparent;
+    z-index: -1;
+    transition: background 0.5s ease;
+}
+
+body.dark-mode::before {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Poppins', sans-serif;
+    background-color: transparent; /* evita sobrepor a imagem */
+    position: relative;
+}
+
+/* Navbar */
+.navbar-font {
+    font-family: 'Yellowtail', cursive;
+    font-size: 30px;
+}
+
+
+.container-avaliacao {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+h1 {
+  font-family: 'Asap', sans-serif;
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 30px;
+  color: #2c3e50;
+}
+
+h2 {
+  font-family: 'Asap', sans-serif;
+  font-size: 1.4rem;
+  color: #2c3e50;
+  margin-top: 20px;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 8px;
+}
+
+p {
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+
+.img-equipamento {
+  max-width: 300px;
+  height: auto;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.form-avaliacao select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #fdfdfd;
+  font-size: 1rem;
+}
+
+.form-avaliacao button,
+.form-avaliacao .btn {
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.form-avaliacao .btn:hover {
+  opacity: 0.9;
+  transition: 0.3s;
+}
+
+footer {
+    background-color: #353839;
+    color: #ffffff;
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+    margin-top: auto;
+}
+
+.footer-info {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Dark Mode */
+body.dark-mode .navbar {
+  background-color: #1e1e1e !important;
+}
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: none;
+  z-index: -1;
+  transition: background 0.5s ease;
+}
+
+body.dark-mode::before {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .navbar .nav-link,
+body.dark-mode .navbar .navbar-brand {
+  color: #f0f0f0 !important;
+}
+
+.dark-mode .container-avaliacao {
+  background-color: #2a2a2a;
+  color: #f0f0f0;
+}
+
+.dark-mode select,
+.dark-mode input,
+.dark-mode textarea {
+  background-color: #444;
+  color: #fff;
+  border: 1px solid #888;
+}
+
+.dark-mode select:disabled {
+  background-color: #333;
+  color: #aaa;
+}
+
+.dark-mode footer {
+  background-color: #111;
+  color: #aaa;
+  border-top-color: #555;
+}
+
+/* Foco acessível para inputs e botões */
+button:focus,
+select:focus {
+  outline: 2px solid #3498db;
+  outline-offset: 2px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .container-solicitacoes {
+    padding: 0 10px;
+  }
+
+  .btn-nova-solicitacao {
+    width: 100%;
+    text-align: center;
+  }
+
+  .img-equipamento {
+    max-width: 100%;
+    display: block;
+    margin: 10px auto;
+  }
+
+  .form-avaliacao select,
+  .form-avaliacao button {
+    font-size: 0.95rem;
+    padding: 8px;
+  }
+
+  .container-avaliacao {
+    padding: 20px 15px;
+    margin: 20px 10px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+}

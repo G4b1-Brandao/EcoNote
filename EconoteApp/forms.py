@@ -1,16 +1,22 @@
 from django import forms
-from .models import Notebook, SolicitacaoNotebook
+from django.contrib.auth.models import User
+from .models import Notebook, SolicitacaoNotebook, Aluno, Professor, PerfilUsuario
+
 
 class NotebookForm(forms.ModelForm):
     class Meta:
         model = Notebook
         exclude = ['usuario']
+        widgets = {
+            'status': forms.Select(attrs={'class': 'form-control'}),
+            'validado': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'em_uso': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }
 
     def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user', None)  # Pega o usuário passado na view
+        user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
 
-        # Estilização e configuração dos campos
         for field_name, field in self.fields.items():
             field.widget.attrs.update({'class': 'bloco-form-input'})
             field.label_suffix = ''
@@ -26,10 +32,10 @@ class NotebookForm(forms.ModelForm):
             )
             self.fields['data_entrega'].label = 'Quando este notebook será entregue para o responsável?'
 
-        # Se o usuário não for admin, oculta os campos 'status' e 'validado'
         if not (user and user.is_superuser):
             self.fields.pop('status', None)
             self.fields.pop('validado', None)
+            self.fields.pop('em_uso', None)
 
 
 
@@ -41,7 +47,6 @@ class SolicitacaoNotebookForm(forms.ModelForm):
             'semestre',
             'historico',
             'contexto',
-            'recomendacao',
             'tempo_uso',
             'justificativa'
         ]
@@ -49,14 +54,12 @@ class SolicitacaoNotebookForm(forms.ModelForm):
             'nome': 'Nome do Aluno',
             'semestre': 'Semestre Atual',
             'contexto': 'Contexto Socioeconômico',
-            'recomendacao': 'Recomendação de Professor',
             'tempo_uso': 'Tempo de Uso do Notebook',
             'justificativa': 'Justificativa',
         }
         widgets = {
             'justificativa': forms.Textarea(attrs={'rows': 10}),
             'contexto': forms.Select(attrs={'required': 'required'}),
-            'recomendacao': forms.Select(attrs={'required': 'required'}),
             'tempo_uso': forms.Select(attrs={'required': 'required'}),
         }
 
@@ -70,9 +73,40 @@ class SolicitacaoNotebookForm(forms.ModelForm):
             })
             field.label_suffix = ''
 
-        # Campo de upload com mensagem de ajuda
+
         self.fields['historico'].widget.attrs.update({
             'accept': 'application/pdf'
         })
         self.fields['historico'].label = 'Histórico Escolar (PDF)'
         self.fields['historico'].help_text = 'Envie apenas arquivos no formato PDF.'
+
+
+
+class UserUpdateForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['first_name'].label = "Nome"
+        self.fields['first_name'].required = True
+
+
+class AlunoUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Aluno
+        fields = ['matricula', 'curso']
+        widgets = {
+            'matricula': forms.TextInput(attrs={'placeholder': 'Sua matrícula'}),
+            'curso': forms.TextInput(attrs={'placeholder': 'Seu curso'}),
+        }
+
+
+class ProfessorUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Professor
+        fields = ['siape']
+        widgets = {
+            'siape': forms.TextInput(attrs={'placeholder': 'Seu SIAPE'}),
+        }

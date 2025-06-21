@@ -32,11 +32,17 @@
   </div>
 </nav>
 
+ {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
 <div class="container-solicitacao devolucao">
   <h1>Solicitar Devolução de Notebook</h1>
 
   {% if solicitacao %}
-  <!-- Formulário visível SOMENTE se o aluno tem notebook em uso -->
+  <!--Formulário visível SOMENTE se o aluno tem notebook em uso -->
   <form method="post" class="formulario">
     {% csrf_token %}
     <div class="bloco-central">

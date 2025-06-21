@@ -9,7 +9,7 @@ class PerfilUsuarioAdmin(admin.ModelAdmin):
 
 @admin.register(Aluno)
 class AlunoAdmin(admin.ModelAdmin):
-    list_display = ('perfil', 'matricula', 'curso', 'ira', 'status')
+    list_display = ('perfil', 'matricula', 'curso')
     search_fields = ('matricula', 'perfil__user__first_name', 'perfil__user__last_name')
 
 
@@ -29,6 +29,6 @@ class NotebookAdmin(admin.ModelAdmin):
 @admin.register(SolicitacaoNotebook)
 class SolicitacaoNotebookAdmin(admin.ModelAdmin):
     list_display = ('nome', 'aluno', 'semestre', 'contexto', 'tempo_uso', 'status', 'data_solicitacao')
-    list_filter = ('contexto', 'recomendacao', 'tempo_uso', 'status')
+    list_filter = ('contexto', 'tempo_uso', 'status')
     search_fields = ('nome', 'aluno__username')
     readonly_fields = ('data_solicitacao',)

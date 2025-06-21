@@ -11,8 +11,6 @@
 {% block titulo %}EcoNote - Minhas Solicitações{% endblock %}
 
 {% block conteudo %}
-<div class="pagina-solicitacoes">
-
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
       <a class="navbar-brand navbar-font" href="{% url 'home_aluno' %}">EcoNote</a>
@@ -33,6 +31,13 @@
       </div>
     </div>
   </nav>
+<div class="pagina-solicitacoes">
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
 
   <div class="conteudo-principal container-solicitacoes">
     <div class="header-solicitacoes">

@@ -23,17 +23,33 @@
 
         <!-- Itens da navbar -->
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <!-- Links à esquerda -->
+            <!-- Links de navegação -->
             <ul class="navbar-nav mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link active" href="{% url 'cadastro' %}">Cadastre-se</a></li>
-                <li class="nav-item"><a class="nav-link active" href="{% url 'login' %}">Login</a></li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        {% if user_is_admin %} {# Usando a flag da view #}
+                            <a class="nav-link active" href="{% url 'home_ADM' %}">Home</a>
+                        {% elif user_is_aluno %} {# Usando a flag da view #}
+                            <a class="nav-link active" href="{% url 'home_aluno' %}">Home</a>
+                        {% elif user_is_professor %} {# Usando a flag da view #}
+                            <a class="nav-link active" href="{% url 'home_professor' %}">Home</a>
+                        {% else %}
+                            <a class="nav-link active" href="{% url 'login' %}">Home (Painel)</a>
+                        {% endif %}
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="confirmarLogout()">Sair</a></li>
+                {% else %}
+                    {# Se o usuário NÃO está logado, mostra Cadastre-se e Login #}
+                    <li class="nav-item"><a class="nav-link active" href="{% url 'cadastro' %}">Cadastre-se</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{% url 'login' %}">Login</a></li>
+                {% endif %}
                 <li class="nav-item"><a class="nav-link" href="#serviços">Serviços</a></li>
                 <li class="nav-item"><a class="nav-link" href="#contato">Entre em contato</a></li>
             </ul>
 
             <!-- Logo à direita -->
             <div class="d-flex align-items-center ms-auto" style="padding-right: 15px;">
-                <img src="{% static 'img/logoif.png' %}" alt="Logo EcoNote" width="60" height="60" class="d-inline-block align-text-top" style="filter: brightness(1.1);">
+                <img src="{% static 'img/logoif.png' %}" alt="[Logo EcoNote]" width="60" height="60" class="d-inline-block align-text-top" style="filter: brightness(1.1);">
             </div>
         </div>
     </div>
@@ -62,40 +78,40 @@
     <h2>Serviços</h2>
 
     <div class="servico-card destaque">
-        <img src="{% static 'img/pc1.png' %}" alt="Notebook Estudo" width="550" height="340">
+        <img src="{% static 'img/pc1.png' %}" alt="[Imagem de Notebook para Estudos]" width="550" height="340">
         <h3>Notebook para Estudos</h3>
         <p>💡 Ideal para tarefas acadêmicas como <strong>pesquisas, produção de textos</strong> e uso de ferramentas essenciais. Perfeito para quem precisa de praticidade com foco nos estudos.</p>
     </div>
 
     <div class="servico-card destaque">
-        <img src="{% static 'img/pc2.png' %}" alt="Notebook para programação" width="590" height="340">
+        <img src="{% static 'img/pc2.png' %}" alt="[Imagem de Notebook para Programação]" width="590" height="340">
         <h3>Notebook para Programação</h3>
         <p>💻 Equipados para <strong>ambientes de desenvolvimento</strong>, suportam ferramentas como IDEs e compiladores. Essenciais para estudantes de tecnologia e programação.</p>
     </div>
 
     <div class="servico-card">
-        <img src="{% static 'img/pc3.png' %}" alt="Reciclagem" width="600" height="360">
+        <img src="{% static 'img/pc3.png' %}" alt="[Imagem de Reciclagem]" width="600" height="360">
         <h3>Reciclagem de Notebooks</h3>
         <p>♻️ Damos destino correto a notebooks usados por meio de <strong>reciclagem responsável</strong>. Colabore com o meio ambiente!</p>
     </div>
 </section>
 
 <section id="contato">
-  <h2>Contato</h2>
-  <p>Tem algum notebook parado e deseja doar?</p>
-  <p>Entre em contato com a gente!</p>
+    <h2>Contato</h2>
+    <p>Tem algum notebook parado e deseja doar?</p>
+    <p>Entre em contato com a gente!</p>
 
-  <div class="contato-grupo">
-    <div class="contato-item">
-      <img src="{% static 'img/tel.png' %}" alt="telefone">
-      <p><a href="tel:40028922">4002-8922</a></p>
-    </div>
+    <div class="contato-grupo">
+        <div class="contato-item">
+            <img src="{% static 'img/tel.png' %}" alt="[Imagem de Telefone]">
+            <p><a href="tel:40028922">4002-8922</a></p>
+        </div>
 
-    <div class="contato-item">
-      <img src="{% static 'img/mail.png' %}" alt="email">
-      <p><a href="mailto:econote.if@gmail.com">econote@gmail.com</a></p>
+        <div class="contato-item">
+            <img src="{% static 'img/mail.png' %}" alt="[Imagem de Email]">
+            <p><a href="mailto:econote.if@gmail.com">econote@gmail.com</a></p>
+        </div>
     </div>
-  </div>
 </section>
 
 <footer>
@@ -109,4 +125,11 @@
 
 <!-- Bootstrap JS e Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function confirmarLogout() {
+        if (confirm("Você tem certeza que deseja sair?")) {
+            window.location.href = "{% url 'logout' %}";
+        }
+    }
+</script>
 {% endblock %}

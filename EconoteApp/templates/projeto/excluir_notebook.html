@@ -1,0 +1,16 @@
+{% extends 'projeto/base.html' %}
+{% block title %}Excluir Notebook{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4 text-danger">Confirmar Exclusão</h2>
+
+    <p>Tem certeza de que deseja excluir o notebook <strong>{{ notebook.modelo }}</strong>?</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Sim, excluir</button>
+        <a href="{% url 'gerenciamento_notebooks' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

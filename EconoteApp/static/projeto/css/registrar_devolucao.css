@@ -1,0 +1,180 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #f8f9fa;
+    background-image: url(https://i.postimg.cc/KY8vKPkc/fundo-home-aluno.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    font-family: 'Nunito', sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background: none;
+    z-index: -1;
+    transition: background 0.5s ease;
+}
+
+body.dark-mode::before {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+
+.navbar { background-color: #353839; color: #ffffff; }
+.navbar-font { font-family: 'Yellowtail', cursive; font-size: 30px; color: #ffffff; }
+body.dark-mode .navbar .nav-link, body.dark-mode .navbar .navbar-brand { color: #f0f0f0 !important; }
+
+
+.container {
+    flex-grow: 1;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    color: #333;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+}
+
+body.dark-mode .container {
+    background-color: rgba(30, 30, 30, 0.95);
+    color: #f8f9fa;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.text-center { text-align: center; }
+h2.mb-4 {
+    font-family: 'Asap', sans-serif;
+    color: #1e3a5f;
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem !important;
+}
+body.dark-mode h2.mb-4 { color: #e0e0e0; }
+
+
+.info-card {
+    background-color: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    margin-bottom: 25px;
+    transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+body.dark-mode .info-card {
+    background-color: #343a40;
+    border-color: #555;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+.info-card p strong { color: #1e3a5f; }
+body.dark-mode .info-card p strong { color: #e0e0e0; }
+
+
+
+.form-devolucao {
+    background-color: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+body.dark-mode .form-devolucao {
+    background-color: #343a40;
+    border-color: #555;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+body.dark-mode .form-group label { color: #f8f9fa; }
+
+.form-control {
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, background-color 0.3s, color 0.3s;
+}
+.form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+body.dark-mode .form-control {
+    background-color: #495057;
+    color: #f8f9fa;
+    border-color: #6c757d;
+}
+body.dark-mode .form-control option {
+    background-color: #495057;
+    color: #f8f9fa;
+}
+
+
+
+.btn-success { background-color: #28a745; border-color: #28a745; }
+.btn-success:hover { background-color: #218838; border-color: #1e7e34; }
+.btn-secondary { background-color: #6c757d; border-color: #6c757d; }
+.btn-secondary:hover { background-color: #5a6268; border-color: #545b62; }
+
+
+
+.alert {
+    border-radius: 8px;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+.alert-warning { background-color: #fff3cd; color: #856404; border-color: #ffeeba; }
+body.dark-mode .alert-warning { background-color: #ffc1072e; color: #ffc107; border-color: #ffc107; }
+.alert-info { background-color: #d1ecf1; color: #0c5460; border-color: #bee5eb; }
+body.dark-mode .alert-info { background-color: #17a2b82e; color: #17a2b8; border-color: #17a2b8; }
+
+
+
+footer {
+    background-color: #353839;
+    color: #ffffff;
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+    margin-top: auto;
+    width: 100%;
+}
+body.dark-mode footer { background-color: #111; color: #eee; }
+.footer-info { font-weight: bold; font-size: 14px; }
+
+
+@media (max-width: 767.98px) {
+    .container {
+        padding: 20px 15px;
+        margin-left: 10px;
+        margin-right: 10px;
+        max-width: none;
+    }
+    .info-card, .form-devolucao {
+        padding: 15px;
+    }
+    h2.mb-4 {
+        font-size: 1.8rem;
+    }
+}

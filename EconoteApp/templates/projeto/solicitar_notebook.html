@@ -39,6 +39,14 @@
 
 <div class="container-solicitacao">
   <h1>Solicitar Notebook</h1>
+ {% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-success">
+      {{ message }}
+    </div>
+  {% endfor %}
+{% endif %}
+
 
   <form method="post" enctype="multipart/form-data" class="formulario" novalidate>
     {% csrf_token %}
@@ -62,13 +70,6 @@
         <option value="Alto">Alto</option>
       </select>
 
-      <label for="recomendacao"><b>Recomendação de Professor</b></label>
-      <select id="recomendacao" name="recomendacao" required>
-        <option value="" disabled selected>Selecione</option>
-        <option value="Sim">Sim</option>
-        <option value="Não">Não</option>
-      </select>
-
       <label for="tempo_uso"><b>Por quanto tempo você precisará do notebook?</b></label>
       <select id="tempo_uso" name="tempo_uso" required>
         <option value="" disabled selected>Selecione</option>
@@ -79,13 +80,8 @@
       </select>
     </div>
 
-    <div class="bloco-central">
-      <h2>Justificativa do aluno</h2>
-      <textarea name="justificativa" rows="10" placeholder="Digite aqui sua justificativa..." required></textarea>
-      <button type="submit" class="botao-solicitar mt-3">Solicitar</button>
-    </div>
 
-    <div class="bloco-direita">
+    <div class="bloco-central">
       <h2>Selecione o Equipamento</h2>
 
       <div class="carousel">
@@ -116,6 +112,12 @@
       <input type="hidden" name="notebook_selecionado" id="notebook-selecionado">
       <button type="button" class="botao-selecionar mt-2" onclick="selecionarNotebook()">Selecionar</button>
     </div>
+
+     <div class="bloco-direita">
+      <h2>Justificativa do aluno</h2>
+      <textarea name="justificativa" rows="10" placeholder="Digite aqui sua justificativa..." required></textarea>
+      <button type="submit" class="botao-solicitar mt-3">Solicitar</button>
+    </div>
   </form>
 </div>
 
@@ -132,10 +134,12 @@
   function confirmarLogout() {
     if (confirm("Você tem certeza que deseja sair?")) {
       window.location.href = "{% url 'logout' %}";
+      return false; // Previne o comportamento padrão do link
     }
+    return false;
   }
 
-  // Alternar modo escuro
+  // Alternar modo escuro (Já está ok com DOMContentLoaded)
   const toggleBtn = document.getElementById('toggle-mode');
   const body = document.body;
   if (localStorage.getItem('theme') === 'dark') {
@@ -150,10 +154,30 @@
   });
 
   // Carrossel notebook
-  let atual = 0;
-  const itens = document.querySelectorAll('.equipamento-item');
+  let atual = 0; // Inicialize a variável fora do DOMContentLoaded, mas os itens dentro.
+  let itens = []; // Mantenha como array vazio inicialmente
+
+  // Função para inicializar o carrossel (chame após o DOM estar pronto)
+  function inicializarCarrossel() {
+    itens = document.querySelectorAll('.equipamento-item');
+    if (itens.length > 0) {
+      mostrarNotebook(atual); // Garante que o primeiro item seja visível ao carregar
+      // Oculta as setas se houver apenas um item
+      if (itens.length <= 1) {
+          document.querySelector('.seta.esquerda').style.display = 'none';
+          document.querySelector('.seta.direita').style.display = 'none';
+      } else {
+          document.querySelector('.seta.esquerda').style.display = 'block';
+          document.querySelector('.seta.direita').style.display = 'block';
+      }
+    } else {
+      document.querySelector('.carousel').style.display = 'none';
+      document.querySelector('.botao-selecionar').style.display = 'none';
+    }
+  }
 
   function mostrarNotebook(index) {
+    if (itens.length === 0) return; // Não faz nada se não houver itens
     itens.forEach((el, i) => {
       el.classList.toggle('ativo', i === index);
       el.classList.toggle('inativo', i !== index);
@@ -161,25 +185,34 @@
   }
 
   function proximoNotebook() {
+    if (itens.length <= 1) return; // Não faz nada se houver 0 ou 1 item
     atual = (atual + 1) % itens.length;
     mostrarNotebook(atual);
   }
 
   function anteriorNotebook() {
+    if (itens.length <= 1) return; // Não faz nada se houver 0 ou 1 item
     atual = (atual - 1 + itens.length) % itens.length;
     mostrarNotebook(atual);
   }
 
   function selecionarNotebook() {
     const ativo = document.querySelector('.equipamento-item.ativo');
-    if (!ativo) return;
+    if (!ativo) {
+        alert("Nenhum notebook disponível para seleção."); // Mensagem mais clara
+        return;
+    }
 
     const selectedId = ativo.getAttribute('data-id');
     const hiddenField = document.getElementById('notebook-selecionado');
     hiddenField.value = selectedId;
 
-    alert("Notebook selecionado com sucesso!");
+    alert("Notebook selecionado com sucesso! ID: " + selectedId); // Inclui o ID para debug
   }
+
+  // Chame a inicialização do carrossel quando o DOM estiver completamente carregado
+  document.addEventListener('DOMContentLoaded', inicializarCarrossel);
+
 </script>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

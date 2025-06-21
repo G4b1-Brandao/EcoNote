@@ -1,6 +1,123 @@
 {% extends 'projeto/base.html' %}
+{% load static %}
 
-{% block content %}
-  <h1>Perfil do Usuário</h1>
-  <p>Esta página está em construção.</p>
+{% block assunto %}
+<link href="https://fonts.googleapis.com/css2?family=Asap:wght@700&family=Nunito:wght@700&family=Yellowtail&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="{% static 'css/perfil.css' %}"> {# Link para este CSS #}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+{% endblock %}
+
+{% block titulo %}EcoNote - Meu Perfil{% endblock %}
+
+{% block conteudo %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand navbar-font" href="{% url 'home_aluno' %}">EcoNote</a> {# Ajustar para a home correta #}
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+                {# Ajuste na navbar para usar as flags do contexto #}
+                {% if user_is_admin %}
+                    <li class="nav-item"><a class="nav-link active" href="{% url 'home_ADM' %}">Home</a></li>
+                {% elif user_is_aluno %}
+                    <li class="nav-item"><a class="nav-link active" href="{% url 'home_aluno' %}">Home</a></li>
+                {% elif user_is_professor %}
+                    <li class="nav-item"><a class="nav-link active" href="{% url 'home_professor' %}">Home</a></li>
+                {% else %}
+                    {# Fallback, embora user.is_authenticated deva cobrir isso #}
+                    <li class="nav-item"><a class="nav-link active" href="{% url 'login' %}">Home</a></li>
+                {% endif %}
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item d-flex align-items-center">
+                    <button id="toggle-mode" title="Alternar tema" aria-label="Alternar modo" class="btn btn-sm btn-outline-light mr-2">🌙</button>
+                    <a class="nav-link logout-link" href="{% url 'logout' %}" onclick="return confirmarLogout()">Sair</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="main-content container mt-4">
+    <h1 class="page-title text-center mb-4">Meu Perfil</h1>
+
+    {% if messages %}
+        <div class="alert-container">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="profile-info-card mx-auto">
+        <h3>Informações Pessoais</h3>
+        <p><strong>Nome:</strong> {{ user.first_name }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Tipo de Usuário:</strong> {{ user.perfilusuario.get_tipo_usuario_display }}</p>
+
+        {% if user_is_aluno %} {# Usando a flag do contexto #}
+            <h3>Informações de Aluno</h3>
+            <p><strong>Matrícula:</strong> {{ user.perfilusuario.aluno.matricula }}</p>
+            <p><strong>Curso:</strong> {{ user.perfilusuario.aluno.curso }}</p>
+            {# Adicione IRA e Status se tiver no modelo Aluno #}
+            {# <p><strong>IRA:</strong> {{ user.perfilusuario.aluno.ira|default:"N/A" }}</p> #}
+            {# <p><strong>Status Aluno:</strong> {{ user.perfilusuario.aluno.status|default:"N/A" }}</p> #}
+        {% elif user_is_professor %} {# Usando a flag do contexto #}
+            <h3>Informações de Professor</h3>
+            <p><strong>SIAPE:</strong> {{ user.perfilusuario.professor.siape }}</p>
+        {% endif %}
+
+        <div class="text-center mt-4">
+            <a href="{% url 'perfil_editar' %}" class="btn btn-primary"><i class="fas fa-edit"></i> Editar Perfil</a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-info text-center py-3">
+        IFCE - CAMPUS ARACATI <br>
+        © 2025 EcoNote. Todos os direitos reservados.<br>
+        Desenvolvido por Ana Gabrielle, Marina Sena, Victor Souza e Paulo Henrique
+    </div>
+</footer>
+
+<script>
+    function confirmarLogout() {
+        if (confirm("Você tem certeza que deseja sair?")) {
+            window.location.href = "{% url 'logout' %}";
+            return false;
+        }
+        return false;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const toggleBtn = document.getElementById('toggle-mode');
+        const body = document.body;
+
+        if (localStorage.getItem('theme') === 'dark') {
+            body.classList.add('dark-mode');
+            toggleBtn.textContent = '☀️';
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDark = body.classList.contains('dark-mode');
+            toggleBtn.textContent = isDark ? '☀️' : '🌙';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        });
+    });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 {% endblock %}

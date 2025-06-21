@@ -1,6 +1,158 @@
 {% extends 'projeto/base.html' %}
+{% load static %}
 
-{% block content %}
-  <h1>Cadastro de Notebooks</h1>
-  <p>Formulário de cadastro de notebooks (em construção).</p>
+{% block assunto %}
+<link href="https://fonts.googleapis.com/css2?family=Asap:wght@700&family=Nunito:wght@700&family=Yellowtail&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="{% static 'css/indicar_aluno.css' %}"> {# Crie este CSS depois #}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+{% endblock %}
+
+{% block titulo %}Indicar Aluno{% endblock %}
+
+{% block conteudo %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand navbar-font" href="{% url 'home_professor' %}">EcoNote</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link active" href="{% url 'home_professor' %}">Home</a></li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item d-flex align-items-center">
+                    <button id="toggle-mode" title="Alternar tema" aria-label="Alternar modo" class="btn btn-sm btn-outline-light mr-2">🌙</button>
+                    <a class="nav-link logout-link" href="{% url 'logout' %}" onclick="return confirmarLogout()">Sair</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="main-content container mt-4">
+    <h1 class="page-title text-center mb-4">Indicar Aluno para Solicitação de Notebook</h1>
+
+    {% if messages %}
+        <div class="alert-container">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if solicitacoes %}
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Aluno</th>
+                        <th>Semestre</th>
+                        <th>Justificativa do Aluno</th>
+                        <th>Indicação do Professor</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for solicitacao in solicitacoes %}
+                        <tr>
+                            <td>{{ solicitacao.nome }}</td>
+                            <td>{{ solicitacao.semestre }}</td>
+                            <td>{{ solicitacao.justificativa|truncatechars:100 }}</td> {# Truncar justificativa longa #}
+                            <td>
+                                {% if solicitacao.indicacao_professor %}
+                                    {{ solicitacao.indicacao_professor|truncatechars:100 }}
+                                    <br>
+                                    <small><em>Indicado por: {{ solicitacao.indicado_por_professor.get_full_name|default:"Professor desconhecido" }}</em></small>
+                                {% else %}
+                                    <span class="text-muted">Sem indicação</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#indicarAlunoModal{{ solicitacao.id }}">
+                                    <i class="fas fa-edit"></i> Indicar/Editar
+                                </button>
+                            </td>
+                        </tr>
+
+                        {# Modal para Indicação/Edição #}
+                        <div class="modal fade" id="indicarAlunoModal{{ solicitacao.id }}" tabindex="-1" role="dialog" aria-labelledby="indicarAlunoModalLabel{{ solicitacao.id }}" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <form method="POST" action="{% url 'indicar_aluno' %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="solicitacao_id" value="{{ solicitacao.id }}">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="indicarAlunoModalLabel{{ solicitacao.id }}">Indicar Aluno: {{ solicitacao.nome }}</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p><strong>Justificativa original do aluno:</strong> {{ solicitacao.justificativa }}</p>
+                                            <div class="form-group">
+                                                <label for="indicacao_texto_{{ solicitacao.id }}">Sua Indicação:</label>
+                                                <textarea name="indicacao_texto" id="indicacao_texto_{{ solicitacao.id }}" class="form-control" rows="5" required>{{ solicitacao.indicacao_professor|default_if_none:"" }}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-success">Salvar Indicação</button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center">Nenhuma solicitação de notebook pendente de indicação no momento.</div>
+    {% endif %}
+</div>
+
+<footer>
+    <div class="footer-info text-center py-3">
+        IFCE - CAMPUS ARACATI <br>
+        © 2025 EcoNote. Todos os direitos reservados.<br>
+        Desenvolvido por Ana Gabrielle, Marina Sena, Victor Souza e Paulo Henrique
+    </div>
+</footer>
+
+<script>
+    function confirmarLogout() {
+        if (confirm("Você tem certeza que deseja sair?")) {
+            window.location.href = "{% url 'logout' %}";
+            return false;
+        }
+        return false;
+    }
+
+    const toggleBtn = document.getElementById('toggle-mode');
+    const body = document.body;
+
+    if (localStorage.getItem('theme') === 'dark') {
+        body.classList.add('dark-mode');
+        toggleBtn.textContent = '☀️';
+    }
+
+    toggleBtn.addEventListener('click', () => {
+        body.classList.toggle('dark-mode');
+        const isDark = body.classList.contains('dark-mode');
+        toggleBtn.textContent = isDark ? '☀️' : '🌙';
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 {% endblock %}

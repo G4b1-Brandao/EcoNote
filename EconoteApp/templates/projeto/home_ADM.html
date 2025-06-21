@@ -35,11 +35,14 @@
   </div>
 </nav>
 
-<main class="main-home">
-  <h2 class="frase-destaque">Olá,ADM!<br><span class="subfrase">O que você gostaria de fazer hoje?</span></h2>
+   <main class="main-home">
+        <h2 class="frase-destaque">
+            Olá, <span class="highlight">ADM!</span>
+            <span class="subfrase">O que você gostaria de fazer hoje?</span>
+        </h2>
 
   <div class="menu menu-aluno">
-  <button onclick="location.href='#'">
+  <button onclick="location.href='{% url 'gerenciamento_emprestimos' %}'">
     <div class="card-button-content">
       <i class="fa-solid fa-handshake"></i><br>
       <span>Controle de Empréstimo</span>
@@ -60,12 +63,12 @@
     </div>
   </button>
 
-  <button onclick="location.href='#'">
-    <div class="card-button-content">
-      <i class="fa-solid fa-user-check"></i><br>
-      <span>Avaliar Aluno</span>
-    </div>
-  </button>
+ <button onclick="location.href='{% url 'avaliar_aluno' %}'">
+   <div class="card-button-content">
+     <i class="fas fa-user-check"></i><br> {# Usando um ícone relevante #}
+     <span>Avaliar Alunos</span>
+   </div>
+ </button>
 
   <button onclick="location.href='{% url 'gerenciamento_notebooks' %}'">
     <div class="card-button-content">
@@ -74,33 +77,34 @@
     </div>
   </button>
 
-  <button onclick="location.href='#'">
-    <div class="card-button-content">
-      <i class="fa-solid fa-recycle"></i><br>
-      <span>Manutenção e Reciclagem</span>
-    </div>
-  </button>
+ <button onclick="location.href='{% url 'manutencao_reciclagem' %}'">
+  <div class="card-button-content">
+    <i class="fas fa-recycle"></i><br>
+    <span>Manutenção e Reciclagem</span>
+  </div>
+</button>
 
-  <button onclick="location.href='#'">
-    <div class="card-button-content">
-      <i class="fa-solid fa-list-ol"></i><br>
-      <span>Lista de Espera</span>
-    </div>
-  </button>
+ <button onclick="location.href='{% url 'lista_de_espera' %}'">
+  <div class="card-button-content">
+    <i class="fas fa-hourglass-half"></i><br> {# Ícone de ampulheta #}
+    <span>Lista de Espera</span>
+  </div>
+</button>
 
-  <button onclick="location.href='#'">
-    <div class="card-button-content">
-      <i class="fa-solid fa-box-archive"></i><br>
-      <span>Controle de Devoluções</span>
-    </div>
-  </button>
-
-  <button onclick="location.href='#'">
-   <div class="card-button-content">
-     <i class="fa-solid fa-file-lines"></i><br>
-     <span>Relatório</span>
-   </div>
+  <button onclick="location.href='{% url 'controle_devolucao' %}'">
+  <div class="card-button-content">
+    <i class="fa-solid fa-box-archive"></i><br>
+    <span>Controle de Devoluções</span>
+  </div>
  </button>
+
+
+ <button onclick="location.href='{% url 'relatorios' %}'">
+  <div class="card-button-content">
+    <i class="fas fa-chart-line"></i><br> {# Ícone de gráfico de linha #}
+    <span>Relatórios</span>
+  </div>
+</button>
 
 </div>
 

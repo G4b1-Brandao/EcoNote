@@ -1,0 +1,118 @@
+{% extends 'projeto/base.html' %}
+{% load static %}
+
+{% block assunto %}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+<link rel="stylesheet" href="{% static 'css/registrar_devolucao.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+{% endblock %}
+
+{% block titulo %}EcoNote - Registrar Devolução{% endblock %}
+
+{% block conteudo %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand navbar-font" href="{% url 'home_ADM' %}">EcoNote</a> 
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link active" href="{% url 'home_ADM' %}">Home</a></li>
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item d-flex align-items-center">
+          <button id="toggle-mode" title="Alternar tema" aria-label="Alternar modo" class="btn btn-sm btn-outline-light mr-2">🌙</button>
+          <a class="nav-link logout-link" href="{% url 'logout' %}" onclick="return confirmarLogout()">Sair</a> 
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-4">
+  <h2 class="mb-4 text-center">Registrar Devolução</h2>
+
+  {# Mensagens de sucesso ou erro #}
+  {% if messages %}
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+      {% for message in messages %}
+        {{ message }}
+      {% endfor %}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  {% endif %}
+
+  {% if solicitacao and emprestimo %} 
+    <div class="card p-4 mx-auto info-card"> {# Adicionado info-card para estilização #}
+      <p><strong>Aluno:</strong> {{ solicitacao.aluno.get_full_name }}</p>
+      <p><strong>Notebook:</strong> {{ solicitacao.notebook.marca }} {{ solicitacao.notebook.modelo }}</p>
+      <p><strong>Data de Retirada:</strong> {{ emprestimo.data_retirada|date:"d/m/Y" }}</p> 
+      <p><strong>Previsão de Devolução:</strong> {{ emprestimo.data_prevista_devolucao|date:"d/m/Y" }}</p> 
+      <p><strong>Motivo da Devolução (Aluno):</strong> {{ devolucao.get_motivo_display|default:"N/A" }}</p> {# Usando devolucao.get_motivo_display #}
+      <p><strong>Detalhes (Aluno):</strong> {{ devolucao.detalhes|default:"Nenhum" }}</p> {# Usando devolucao.detalhes #}
+    </div>
+
+    <form method="post" class="mt-4 mx-auto form-devolucao" action="{% url 'registrar_devolucao' solicitacao.id %}"> {# Adicionado form-devolucao #}
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="estado">Estado do Notebook na devolução:</label>
+        <select name="estado" id="estado" class="form-control" required aria-required="true">
+          <option value="" disabled selected hidden>Selecione...</option>
+          <option value="disponivel">Funcionando normalmente</option>
+          <option value="manutencao">Necessita de manutenção</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-success mt-3 w-100">Confirmar Devolução</button>
+      <a href="{% url 'controle_devolucao' %}" class="btn btn-secondary mt-3 w-100">Cancelar</a>
+    </form>
+  {% else %}
+    <div class="alert alert-warning text-center">
+      Solicitação ou Empréstimo associado não encontrados, ou a devolução já foi processada.
+    </div>
+  {% endif %}
+</div>
+
+<footer>
+  <div class="footer-info text-center py-3">
+    IFCE - CAMPUS ARACATI<br>
+    © 2025 EcoNote. Todos os direitos reservados.<br>
+    Desenvolvido por Ana Gabrielle, Marina Sena, Victor Souza e Paulo Henrique
+  </div>
+</footer>
+
+<!-- Scripts -->
+<script>
+  function confirmarLogout() {
+    if (confirm("Você tem certeza que deseja sair?")) {
+      window.location.href = "{% url 'logout' %}";
+      return false; 
+    }
+    return false;
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const toggleBtn = document.getElementById('toggle-mode');
+    const body = document.body;
+
+    if (localStorage.getItem('theme') === 'dark') {
+      body.classList.add('dark-mode');
+      toggleBtn.textContent = '☀️';
+    }
+
+    toggleBtn.addEventListener('click', () => {
+      body.classList.toggle('dark-mode');
+      const isDark = body.classList.contains('dark-mode');
+      toggleBtn.textContent = isDark ? '☀️' : '🌙';
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+  });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" crossorigin="anonymous"></script>
+{% endblock %}

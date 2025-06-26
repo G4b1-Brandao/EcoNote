@@ -38,13 +38,17 @@ urlpatterns = [
     path('lista-de-espera/', views.lista_de_espera_view, name='lista_de_espera'),
     path('controle-devolucao/', views.controle_devolucoes_view, name='controle_devolucao'),
     path('registrar-devolucao/<int:solicitacao_id>/', views.registrar_devolucao_view, name='registrar_devolucao'),
+    
+    # URLs de gerenciamento de notebooks (aprovar, recusar, editar, excluir, atualizar status)
+    path('aprovar-notebook/<int:notebook_id>/', views.aprovar_notebook_view, name='aprovar_notebook'), # Já está aqui
+    path('recusar-notebook/<int:notebook_id>/', views.recusar_notebook_view, name='recusar_notebook'), # Já está aqui
     path('notebook/<int:notebook_id>/editar/', views.editar_notebook_view, name='editar_notebook'),
     path('notebook/<int:notebook_id>/excluir/', views.excluir_notebook_view, name='excluir_notebook'),
     path('notebook/<int:notebook_id>/atualizar-status/', views.atualizar_status_notebook, name='atualizar_status_notebook'),
+    
+    # Ações da Lista de Espera (uma entrada de remover)
     path('lista-de-espera/remover/<int:solicitacao_id>/', views.remover_da_lista_espera_view, name='remover_da_lista_espera'),
     path('lista-de-espera/aprovar/<int:solicitacao_id>/', views.aprovar_da_lista_espera_view, name='aprovar_da_lista_espera'),
-    path('lista-de-espera/remover/<int:solicitacao_id>/', views.remover_da_lista_espera_view, name='remover_da_lista_espera'),
-
 ]
 
 if settings.DEBUG:

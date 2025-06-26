@@ -230,6 +230,106 @@ body.dark-mode .alert-info {
     border-color: #17a2b8;
 }
 
+/* ... (Seu CSS existente para o modo claro e outras seções) ... */
+
+/* --- ESTILOS PARA MODO ESCURO --- */
+body.dark-mode {
+    background-color: #1e1e1e;
+    color: #f8f9fa; /* Cor do texto padrão para o modo escuro */
+}
+
+body.dark-mode .container {
+    background-color: rgba(30, 30, 30, 0.95);
+    color: #f8f9fa;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode .table thead th {
+    background-color: #3f464d; /* Cabeçalho ligeiramente mais escuro */
+    border-color: #555;
+}
+
+body.dark-mode .table tbody td {
+    background-color: #2c2c2c; /* Fundo mais escuro para as células */
+    color: #f8f9fa; /* Texto claro para as células */
+    border-color: #555;
+}
+
+body.dark-mode .table-striped tbody tr:nth-of-type(odd) {
+    background-color: #3a3a3a; /* Linhas ímpares ligeiramente diferentes */
+}
+
+body.dark-mode .table-bordered th,
+body.dark-mode .table-bordered td {
+    border-color: #555;
+}
+
+
+body.dark-mode .modal-content {
+    background-color: #2c2c2c;
+    color: #f8f9fa;
+    border: 1px solid #555;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .modal-header {
+    background-color: #3a3a3a;
+    border-bottom: 1px solid #555;
+}
+
+body.dark-mode .modal-title {
+    color: #e0e0e0;
+}
+
+body.dark-mode .modal-body {
+    background-color: #2c2c2c;
+    color: #f8f9fa;
+}
+
+body.dark-mode .modal-body hr {
+    border-top: 1px solid #555;
+}
+
+body.dark-mode .modal-body h6 {
+    color: #b0b0b0;
+}
+
+body.dark-mode .modal-body p strong {
+    color: #a0c2e3;
+}
+
+
+body.dark-mode .modal-body a {
+    color: #80bdff;
+}
+body.dark-mode .modal-body a:hover {
+    color: #61affe;
+}
+
+
+body.dark-mode .modal-footer {
+    background-color: #3a3a3a;
+    border-top: 1px solid #555;
+}
+
+
+body.dark-mode .btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: #fff;
+}
+body.dark-mode .btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+
+body.dark-mode .badge-info { background-color: #138496; }
+body.dark-mode .badge-success { background-color: #218838; }
+body.dark-mode .badge-danger { background-color: #c82333; }
+body.dark-mode .badge-warning { background-color: #d39e00; color: #fff;}
+body.dark-mode .badge-secondary { background-color: #545b62; }
+
 
 .logout-link {
     color: #ccc;

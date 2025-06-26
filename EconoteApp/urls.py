@@ -41,6 +41,10 @@ urlpatterns = [
     path('notebook/<int:notebook_id>/editar/', views.editar_notebook_view, name='editar_notebook'),
     path('notebook/<int:notebook_id>/excluir/', views.excluir_notebook_view, name='excluir_notebook'),
     path('notebook/<int:notebook_id>/atualizar-status/', views.atualizar_status_notebook, name='atualizar_status_notebook'),
+    path('lista-de-espera/remover/<int:solicitacao_id>/', views.remover_da_lista_espera_view, name='remover_da_lista_espera'),
+    path('lista-de-espera/aprovar/<int:solicitacao_id>/', views.aprovar_da_lista_espera_view, name='aprovar_da_lista_espera'),
+    path('lista-de-espera/remover/<int:solicitacao_id>/', views.remover_da_lista_espera_view, name='remover_da_lista_espera'),
+
 ]
 
 if settings.DEBUG:

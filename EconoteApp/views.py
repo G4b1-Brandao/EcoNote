@@ -589,18 +589,142 @@ def avaliar_solicitacao(request, solicitacao_id):
 
 
 
+
+
 @login_required
 @user_passes_test(is_admin)
 def lista_de_espera_view(request):
-
     solicitacoes_lista_espera = SolicitacaoNotebook.objects.filter(
         status='Lista de Espera'
     ).order_by('data_solicitacao')
-    return render(request, 'projeto/lista_de_espera.html', {
-        'solicitacoes': solicitacoes_lista_espera
-    })
 
 
+    notebooks_disponiveis = Notebook.objects.filter(
+        Q(status='disponivel') | Q(status='oky'),
+        validado=True,
+        em_uso=False
+    ).order_by('marca', 'modelo')
+
+    context = {
+        'solicitacoes': solicitacoes_lista_espera,
+        'notebooks_disponiveis': notebooks_disponiveis,
+    }
+    return render(request, 'projeto/lista_de_espera.html', context)
+
+@require_POST
+@login_required
+@user_passes_test(is_admin)
+def remover_da_lista_espera_view(request, solicitacao_id):
+    solicitacao = get_object_or_404(SolicitacaoNotebook, id=solicitacao_id)
+
+
+    if solicitacao.status == 'Lista de Espera':
+        solicitacao.status = 'Recusado'
+        solicitacao.avaliado_por = request.user
+        solicitacao.data_avaliacao = timezone_now()
+        solicitacao.save()
+        messages.success(request, f'Solicitação do aluno {solicitacao.nome} removida da lista de espera e marcada como Recusada.')
+    else:
+        messages.warning(request, f'A solicitação do aluno {solicitacao.nome} não está na lista de espera ou já foi processada.')
+
+    return redirect('lista_de_espera')
+
+
+# ... (suas importações existentes)
+
+# --- Admin: Lista de Espera ---
+@login_required
+@user_passes_test(is_admin)
+def lista_de_espera_view(request):
+    solicitacoes_lista_espera = SolicitacaoNotebook.objects.filter(
+        status='Lista de Espera'
+    ).order_by('data_solicitacao')
+
+    notebooks_disponiveis = Notebook.objects.filter(
+        Q(status='disponivel') | Q(status='oky'),
+        validado=True,
+        em_uso=False
+    ).order_by('marca', 'modelo')
+
+    context = {
+        'solicitacoes': solicitacoes_lista_espera,
+        'notebooks_disponiveis': notebooks_disponiveis,
+    }
+    return render(request, 'projeto/lista_de_espera.html', context)
+
+
+@require_POST
+@login_required
+@user_passes_test(is_admin)
+def aprovar_da_lista_espera_view(request, solicitacao_id):
+    solicitacao = get_object_or_404(SolicitacaoNotebook, id=solicitacao_id)
+    notebook_id = request.POST.get('notebook_aprovacao_id')
+    tempo_concedido_str = request.POST.get('tempo_concedido_aprovacao')
+
+
+    if not notebook_id:
+        messages.error(request, 'Você precisa selecionar um notebook para aprovar esta solicitação.')
+        return redirect('lista_de_espera')
+
+
+
+    notebook_selecionado = get_object_or_404(
+        Notebook,
+        Q(status='disponivel') | Q(status='oky'),
+        id=notebook_id,
+        validado=True,
+        em_uso=False
+    )
+
+
+
+    if solicitacao.status != 'Lista de Espera':
+        messages.warning(request, 'Esta solicitação não está mais na lista de espera ou já foi processada.')
+        return redirect('lista_de_espera')
+
+    try:
+        solicitacao.status = 'Aprovado'
+        solicitacao.tempo_concedido = tempo_concedido_str
+        solicitacao.avaliado_por = request.user
+        solicitacao.data_avaliacao = timezone_now()
+        solicitacao.save()
+
+        notebook_selecionado.status = 'emprestado'
+        notebook_selecionado.em_uso = True
+        notebook_selecionado.save()
+
+        EmprestimoNotebook.objects.create(
+            solicitacao=solicitacao,
+            notebook=notebook_selecionado,
+            aluno=solicitacao.aluno,
+            data_retirada=timezone_now().date(),
+            avaliado_por_admin=request.user,
+            status_emprestimo='emprestado'
+        )
+        messages.success(request, f'Solicitação do aluno {solicitacao.nome} aprovada com sucesso e notebook {notebook_selecionado.modelo} emprestado!')
+        return redirect('gerenciamento_emprestimos')
+
+    except Exception as e:
+        messages.error(request, f'Erro ao aprovar solicitação da lista de espera: {e}.')
+        return redirect('lista_de_espera')
+
+
+@require_POST
+@login_required
+@user_passes_test(is_admin)
+def remover_da_lista_espera_view(request, solicitacao_id):
+    solicitacao = get_object_or_404(SolicitacaoNotebook, id=solicitacao_id)
+
+    if solicitacao.status == 'Lista de Espera':
+        solicitacao.status = 'Recusado'
+        solicitacao.avaliado_por = request.user
+        solicitacao.data_avaliacao = timezone_now()
+        solicitacao.save()
+        messages.success(request, f'Solicitação do aluno {solicitacao.nome} removida da lista de espera e marcada como Recusada.')
+    else:
+        messages.warning(request, f'A solicitação do aluno {solicitacao.nome} não está na lista de espera ou já foi processada.')
+
+    return redirect('lista_de_espera')
 @login_required
 @user_passes_test(is_admin)
 def avaliar_aluno_view(request):

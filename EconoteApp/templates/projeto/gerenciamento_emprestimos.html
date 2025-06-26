@@ -4,8 +4,8 @@
 {% block assunto %}
 <link href="https://fonts.googleapis.com/css2?family=Asap:wght@700&family=Nunito:wght@700&family=Yellowtail&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-<link rel="stylesheet" href="{% static 'css/gerenciamento_emprestimos.css' %}"
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/gerenciamento_emprestimos.css' %}">
 {% endblock %}
 
 {% block titulo %}Gerenciamento de Empréstimos{% endblock %}
@@ -25,7 +25,7 @@
                 <ul class="navbar-nav">
                     <li class="nav-item d-flex align-items-center">
                         <button id="toggle-mode" title="Alternar tema" aria-label="Alternar modo" class="btn btn-sm btn-outline-light mr-2">🌙</button>
-                        <a class="nav-link logout-link" href="#" onclick="confirmarLogout()">Sair</a>
+                        <a class="nav-link logout-link" href="{% url 'logout' %}" onclick="return confirmarLogout()">Sair</a>
                     </li>
                 </ul>
             </div>
@@ -44,7 +44,7 @@
             </div>
         {% endif %}
 
-        <h1>Gerenciamento de Empréstimos</h1>
+        <h1 class="text-center mb-4">Gerenciamento de Empréstimos</h1>
 
         {% if emprestimos %}
             <div class="table-responsive">
@@ -63,7 +63,7 @@
                         {% for emprestimo in emprestimos %}
                             <tr>
                                 <td>{{ emprestimo.aluno.get_full_name }}</td>
-                                <td>{{ emprestimo.notebook.descricao_resumida }}</td>
+                                <td>{{ emprestimo.notebook.marca }} {{ emprestimo.notebook.modelo }}</td>
                                 <td>{{ emprestimo.data_retirada|date:"d/m/Y" }}</td>
                                 <td>
                                     {% if emprestimo.data_prevista_devolucao %}
@@ -72,61 +72,183 @@
                                         N/A
                                     {% endif %}
                                 </td>
-                                <td>{{ emprestimo.get_status_emprestimo_display }}</td>
                                 <td>
-                                    {# Aqui você pode adicionar botões para "Registrar Devolução", "Ver Detalhes", "Editar Empréstimo", etc. #}
-                                    <a href="#" class="btn btn-sm btn-info">Detalhes</a>
+                                    <span class="badge badge-{% if emprestimo.status_emprestimo == 'emprestado' %}info{% elif emprestimo.status_emprestimo == 'devolvido' %}success{% elif emprestimo.status_emprestimo == 'atrasado' %}danger{% elif emprestimo.status_emprestimo == 'cancelado' %}secondary{% endif %}">
+                                        {{ emprestimo.get_status_emprestimo_display }}
+                                    </span>
+                                </td>
+                                <td>
+                                    {# Botão Detalhes: abre o modal com as informações #}
+                                    <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#detalhesEmprestimoModal{{ emprestimo.id }}" title="Ver Detalhes">
+                                        <i class="fas fa-info-circle"></i> Detalhes
+                                    </button>
+                                    
                                     {% if emprestimo.status_emprestimo == 'emprestado' %}
-                                        {# Exemplo: link para uma futura view de registrar devolução #}
-                                        <a href="{% url 'registrar_devolucao' emprestimo.solicitacao.id %}" class="btn btn-sm btn-success">Registrar Devolução</a>
+                                        {# Botão para registrar devolução, se o empréstimo ainda estiver ativo #}
+                                        <a href="{% url 'registrar_devolucao' emprestimo.solicitacao.id %}" class="btn btn-sm btn-success" title="Registrar Devolução">
+                                            <i class="fas fa-undo-alt"></i> Registrar Devolução
+                                        </a>
                                     {% endif %}
                                 </td>
                             </tr>
+
+                            
+                            <div class="modal fade" id="detalhesEmprestimoModal{{ emprestimo.id }}" tabindex="-1" role="dialog" aria-labelledby="detalhesEmprestimoModalLabel{{ emprestimo.id }}" aria-hidden="true">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="detalhesEmprestimoModalLabel{{ emprestimo.id }}">Detalhes do Empréstimo</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p><strong>Aluno:</strong> {{ emprestimo.aluno.get_full_name }}</p>
+                                            <p><strong>Notebook:</strong> {{ emprestimo.notebook.marca }} {{ emprestimo.notebook.modelo }} ({{ emprestimo.notebook.processador }}, {{ emprestimo.notebook.memoria_ram }}, {{ emprestimo.notebook.armazenamento }})</p>
+                                            {% if emprestimo.notebook.imagem %}
+                                                <div class="text-center mb-3">
+                                                    <img src="{{ emprestimo.notebook.imagem.url }}" alt="[Imagem de Notebook Emprestado]" class="img-fluid rounded" style="max-height: 150px;">
+                                                </div>
+                                            {% endif %}
+                                            <p><strong>Status do Empréstimo:</strong> <span class="badge badge-{% if emprestimo.status_emprestimo == 'emprestado' %}info{% elif emprestimo.status_emprestimo == 'devolvido' %}success{% elif emprestimo.status_emprestimo == 'atrasado' %}danger{% elif emprestimo.status_emprestimo == 'cancelado' %}secondary{% endif %}">
+                                                {{ emprestimo.get_status_emprestimo_display }}
+                                            </span></p>
+                                            <p><strong>Data de Retirada:</strong> {{ emprestimo.data_retirada|date:"d/m/Y" }}</p>
+                                            <p><strong>Data Prevista de Devolução:</strong> {{ emprestimo.data_prevista_devolucao|date:"d/m/Y"|default:"N/A" }}</p>
+                                            <p><strong>Data Real de Devolução:</strong> {{ emprestimo.data_devolucao_real|date:"d/m/Y"|default:"N/A" }}</p>
+                                            <p><strong>Solicitação Original:</strong> <a href="#" data-toggle="modal" data-target="#detalhesSolicitacaoOriginalModal{{ emprestimo.solicitacao.id }}">Ver Detalhes da Solicitação</a></p>
+                                            <p><strong>Registrado Por (Admin):</strong> {{ emprestimo.avaliado_por_admin.get_full_name|default:"N/A" }}</p>
+                                            
+                                            <hr>
+                                            <h6>Histórico de Manutenções do Notebook:</h6>
+                                            {% if emprestimo.notebook.manutencoes.all %}
+                                                <ul class="list-unstyled">
+                                                    {% for manutencao in emprestimo.notebook.manutencoes.all %}
+                                                        <li>- {{ manutencao.get_tipo_manutencao_display }} em {{ manutencao.data_manutencao|date:"d/m/Y" }}: {{ manutencao.solucao_aplicada|truncatechars:100 }}</li>
+                                                    {% endfor %}
+                                                </ul>
+                                            {% else %}
+                                                <p>Nenhum histórico de manutenção para este notebook.</p>
+                                            {% endif %}
+
+                                            <hr>
+                                            <h6>Avaliação do Aluno (Pós-Empréstimo):</h6>
+                                            {% if emprestimo.avaliacao_aluno %} {# Acessa via related_name #}
+                                                <p><strong>Recomendação:</strong> {{ emprestimo.avaliacao_aluno.get_recomendacao_futura_display }}</p>
+                                                <p><strong>Desempenho Acadêmico:</strong> {{ emprestimo.avaliacao_aluno.desempenho_academico_obs|default:"N/A" }}</p>
+                                                <p><strong>Conduta:</strong> {{ emprestimo.avaliacao_aluno.conduta_obs|default:"N/A" }}</p>
+                                                <p><strong>Observações Gerais:</strong> {{ emprestimo.avaliacao_aluno.observacoes_gerais|default:"N/A" }}</p>
+                                                <small><em>Avaliado por {{ emprestimo.avaliacao_aluno.administrador.get_full_name|default:"N/A" }} em {{ emprestimo.avaliacao_aluno.data_avaliacao|date:"d/m/Y" }}</em></small>
+                                            {% else %}
+                                                <p>Nenhuma avaliação de aluno registrada para este empréstimo.</p>
+                                            {% endif %}
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                           
+                            <div class="modal fade" id="detalhesSolicitacaoOriginalModal{{ emprestimo.solicitacao.id }}" tabindex="-1" role="dialog" aria-labelledby="detalhesSolicitacaoOriginalModalLabel{{ emprestimo.solicitacao.id }}" aria-hidden="true">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="detalhesSolicitacaoOriginalModalLabel{{ emprestimo.solicitacao.id }}">Detalhes da Solicitação Original (ID: {{ emprestimo.solicitacao.id }})</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p><strong>Aluno:</strong> {{ emprestimo.solicitacao.nome }} ({{ emprestimo.solicitacao.aluno.username }})</p>
+                                            <p><strong>Semestre:</strong> {{ emprestimo.solicitacao.semestre }}</p>
+                                            <p><strong>Contexto Socioeconômico:</strong> {{ emprestimo.solicitacao.contexto }}</p>
+                                            <p><strong>Tempo Solicitado:</strong> {{ emprestimo.solicitacao.get_tempo_uso_display }}</p>
+                                            <p><strong>Justificativa do Aluno:</strong> {{ emprestimo.solicitacao.justificativa }}</p>
+                                            <p><strong>Data da Solicitação:</strong> {{ emprestimo.solicitacao.data_solicitacao|date:"d/m/Y H:i" }}</p>
+                                            {% if emprestimo.solicitacao.historico %}
+                                                <p><strong>Histórico Escolar:</strong> <a href="{{ emprestimo.solicitacao.historico.url }}" target="_blank">Visualizar PDF</a></p>
+                                            {% else %}
+                                                <p><strong>Histórico Escolar:</strong> Não enviado.</p>
+                                            {% endif %}
+                                            <hr>
+                                            <h6>Indicação do Professor:</h6>
+                                            {% if emprestimo.solicitacao.indicacao_professor %}
+                                                <p>{{ emprestimo.solicitacao.indicacao_professor }}</p>
+                                                <p><small><em>Indicado por: {{ emprestimo.solicitacao.indicado_por_professor.get_full_name|default:"Não informado" }} em {{ emprestimo.solicitacao.data_avaliacao|date:"d/m/Y"|default:"N/A" }}</em></small></p>
+                                            {% else %}
+                                                <p>Nenhuma indicação de professor para esta solicitação.</p>
+                                            {% endif %}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
         {% else %}
-            <div class="alert alert-warning" role="alert">
-                Não há empréstimos registrados.
-            </div>
+            <div class="alert alert-info text-center">Nenhum empréstimo registrado.</div>
         {% endif %}
 
         <a href="{% url 'home_ADM' %}" class="btn btn-secondary mt-3">Voltar ao Painel</a>
     </div>
-<footer>
-  <div class="footer-info">
-    IFCE - CAMPUS ARACATI <br>
-    © 2025 EcoNote. Todos os direitos reservados.<br>
-    Desenvolvido por Ana Gabrielle, Marina Sena, Victor Souza e Paulo Henrique
-  </div>
-</footer>
 
-<!-- Scripts -->
-<script>
-  function confirmarLogout() {
-    if (confirm("Você tem certeza que deseja sair?")) {
-      window.location.href = "{% url 'logout' %}";
-    }
-  }
+    <footer>
+        <div class="footer-info text-center py-3">
+            IFCE - CAMPUS ARACATI <br>
+            © 2025 EcoNote. Todos os direitos reservados.<br>
+            Desenvolvido por Ana Gabrielle, Marina Sena, Victor Souza e Paulo Henrique
+        </div>
+    </footer>
 
-  const toggleBtn = document.getElementById('toggle-mode');
-  const body = document.body;
+  
+    <script>
+        function confirmarLogout() {
+            if (confirm("Você tem certeza que deseja sair?")) {
+                window.location.href = "{% url 'logout' %}";
+            }
+        }
 
-  if (localStorage.getItem('theme') === 'dark') {
-    body.classList.add('dark-mode');
-    toggleBtn.textContent = '☀️';
-  }
+        const toggleBtn = document.getElementById('toggle-mode');
+        const body = document.body;
 
-  toggleBtn.addEventListener('click', () => {
-    body.classList.toggle('dark-mode');
-    const isDark = body.classList.contains('dark-mode');
-    toggleBtn.textContent = isDark ? '☀️' : '🌙';
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
-  });
-</script>
+        if (localStorage.getItem('theme') === 'dark') {
+            body.classList.add('dark-mode');
+            toggleBtn.textContent = '☀️';
+        }
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" crossorigin="anonymous"></script>
+        toggleBtn.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDark = body.classList.contains('dark-mode');
+            toggleBtn.textContent = isDark ? '☀️' : '🌙';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        });
+
+      
+        $(document).ready(function() {
+            $('.modal').on('hidden.bs.modal', function (e) {
+                if ($('.modal.show').length === 0 && $(e.target).attr('id').includes('detalhesSolicitacaoOriginalModal')) {
+                    var parentModalId = $(e.target).closest('.modal').prevAll('.modal.show').attr('id');
+                    if (parentModalId) {
+                        $('#' + parentModalId).modal('show');
+                    }
+                }
+            });
+            
+            
+            $('[data-target*="#detalhesSolicitacaoOriginalModal"]').on('click', function() {
+                $(this).closest('.modal').modal('hide');
+            });
+        });
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" crossorigin="anonymous"></script>
 {% endblock %}

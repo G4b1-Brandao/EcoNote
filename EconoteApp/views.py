@@ -725,10 +725,10 @@ def remover_da_lista_espera_view(request, solicitacao_id):
         messages.warning(request, f'A solicitação do aluno {solicitacao.nome} não está na lista de espera ou já foi processada.')
 
     return redirect('lista_de_espera')
+
 @login_required
 @user_passes_test(is_admin)
 def avaliar_aluno_view(request):
-
     emprestimos_para_avaliar = EmprestimoNotebook.objects.filter(
         status_emprestimo='devolvido',
         avaliacao_aluno__isnull=True
@@ -741,8 +741,10 @@ def avaliar_aluno_view(request):
         recomendacao_futura = request.POST.get('recomendacao_futura')
         observacoes_gerais = request.POST.get('observacoes_gerais')
 
-        emprestimo = get_object_or_404(EmprestimoNotebook, id=emprestimo_id)
 
+        foto_recebimento = request.FILES.get('foto_recebimento')
+
+        emprestimo = get_object_or_404(EmprestimoNotebook, id=emprestimo_id)
 
         if not desempenho_academico_obs or not conduta_obs or not recomendacao_futura:
             messages.error(request, 'Por favor, preencha as observações de desempenho, conduta e a recomendação.')
@@ -756,7 +758,8 @@ def avaliar_aluno_view(request):
                 desempenho_academico_obs=desempenho_academico_obs,
                 conduta_obs=conduta_obs,
                 recomendacao_futura=recomendacao_futura,
-                observacoes_gerais=observacoes_gerais
+                observacoes_gerais=observacoes_gerais,
+                foto_recebimento=foto_recebimento
             )
             messages.success(request, f'Avaliação do aluno {emprestimo.aluno.get_full_name()} registrada com sucesso!')
             return redirect('avaliar_aluno')
@@ -766,7 +769,7 @@ def avaliar_aluno_view(request):
 
     return render(request, 'projeto/avaliar_aluno.html', {
         'emprestimos_para_avaliar': emprestimos_para_avaliar,
-        'recomendacao_choices': AvaliacaoAluno.RECOMENDACAO_CHOICES, # Passa as opções para o select
+        'recomendacao_choices': AvaliacaoAluno.RECOMENDACAO_CHOICES,
     })
 
 

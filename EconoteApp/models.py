@@ -372,10 +372,18 @@ class AvaliacaoAluno(models.Model):
         verbose_name="Recomendação para Futuros Empréstimos",
         help_text="Recomendaria o aluno para futuros empréstimos?"
     )
+
     observacoes_gerais = models.TextField(
         blank=True, null=True,
         verbose_name="Observações Gerais",
         help_text="Outras observações relevantes sobre o aluno."
+    )
+
+    foto_recebimento = models.ImageField(
+        upload_to='avaliacoes_notebooks/',
+        null=True, blank=True,
+        verbose_name="Foto do Notebook no Recebimento",
+        help_text="Foto do estado do notebook no momento da devolução."
     )
 
     class Meta:

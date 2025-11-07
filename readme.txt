@@ -11,7 +11,11 @@
 	Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 	.\venv\Scripts\Activate.ps1
 
-	pip install			#instala as dependências na venv
+	pip install	-r requirements.txt		#instala as dependências na venv
+
+4 - Rode o projeto: 
+
+	python manage.py runserver 127.0.0.1:8000
 
 Cuidados:
 

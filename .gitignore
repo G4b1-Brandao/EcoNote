@@ -99,3 +99,7 @@ __pypackages__/
 
 # Windows
 Thumbs.db
+# Ignorar arquivos e pastas gerados pelo Python/Django
+__pycache__/
+*.pyc
+*.swp

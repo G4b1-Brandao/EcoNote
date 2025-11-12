@@ -8,7 +8,7 @@ Este repositório contém o desenvolvimento do projeto **EcoNote**, criado para 
 
 - **Modelagem de Sistema:**  Ana Gabrielle  
 
-- **Desenvolvimento Frontend/Backend:**  Ana Gabrielle  e Paulo Henrique  
+- **Desenvolvimento Frontend/Backend:**  Ana Gabrielle, Paulo Henrique , Italo Nunes e Brunno Luiz
 
 - **Testes:** Ana Gabrielle  
   
@@ -51,4 +51,4 @@ O projeto EcoNote está sendo desenvolvido utilizando as seguintes tecnologias:
 ## 📝 Contribuição
 Este repositório é mantido pelos integrantes da equipe para fins acadêmicos. Caso tenha sugestões ou queira acompanhar o desenvolvimento, fique à vontade para explorar o código e acompanhar os commits!
 
-📌 Projeto desenvolvido para a disciplina de Análise e Projeto de Sistemas - 2025
+📌 Projeto desenvolvido para a disciplina de Análise e Projeto de Sistemas e Desenvolvimento Web- 2025

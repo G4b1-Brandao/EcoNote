@@ -393,4 +393,3 @@ class AvaliacaoAluno(models.Model):
 
     def __str__(self):
         return f"Avaliação de {self.aluno.get_full_name()} para Empréstimo ID {self.emprestimo.id}"
-

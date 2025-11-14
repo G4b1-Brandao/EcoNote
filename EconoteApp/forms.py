@@ -3,19 +3,6 @@ from django.contrib.auth.models import User
 from .models import Notebook, SolicitacaoNotebook, Aluno, Professor, PerfilUsuario
 
 
-CURSO_CHOICES = [
-    ('Aquicultura (Técnico)', 'Aquicultura (Técnico)'),
-    ('Eventos (Técnico)', 'Eventos (Técnico)'),
-    ('Guia de Turismo (Técnico)', 'Guia de Turismo (Técnico)'),
-    ('Informática (Técnico)', 'Informática (Técnico)'),
-    ('Química (Técnico)', 'Química (Técnico)'),
-    ('Ciência da Computação (Bacharelado)', 'Ciência da Computação (Bacharelado)'),
-    ('Engenharia de Aquicultura (Bacharelado)', 'Engenharia de Aquicultura (Bacharelado)'),
-    ('Licenciatura em Química (Licenciatura)', 'Licenciatura em Química (Licenciatura)'),
-    ('Tecnologia em Hotelaria (Tecnologia)', 'Tecnologia em Hotelaria (Tecnologia)'),
-    ('Ensino de Línguas e Linguagens (Especialização)', 'Ensino de Línguas e Linguagens (Especialização)'),
-]
-
 class NotebookForm(forms.ModelForm):
     class Meta:
         model = Notebook
@@ -107,15 +94,13 @@ class UserUpdateForm(forms.ModelForm):
 
 
 class AlunoUpdateForm(forms.ModelForm):
-    curso = forms.ChoiceField(choices=CURSO_CHOICES, label="Curso")
-
     class Meta:
         model = Aluno
         fields = ['matricula', 'curso']
         widgets = {
             'matricula': forms.TextInput(attrs={'placeholder': 'Sua matrícula'}),
+            'curso': forms.TextInput(attrs={'placeholder': 'Seu curso'}),
         }
-
 
 
 class ProfessorUpdateForm(forms.ModelForm):

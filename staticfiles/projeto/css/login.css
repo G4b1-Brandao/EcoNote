@@ -162,3 +162,15 @@ footer a {
   display: inline-block;
   margin-bottom: 5px;
 }
+
+.forgot-password {
+  display: block;
+  margin-top: 10px;
+  font-size: 0.9em;
+  color: #2e8b57;
+  text-decoration: none;
+}
+.forgot-password:hover {
+  text-decoration: underline;
+}
+

@@ -1,0 +1,16 @@
+{% extends 'projeto/base.html' %}
+{% load static %}
+{% block conteudo %}
+  <h2>Verificar e-mail</h2>
+  <p>Enviamos um código para: <strong>{{ user_obj.email }}</strong></p>
+  {% if sent_at %}
+    <p>Código enviado em: {{ sent_at }}</p>
+  {% endif %}
+  <form method="post">
+    {% csrf_token %}
+    {{ form.code.label_tag }}<br>
+    {{ form.code }}<br><br>
+    <button type="submit">Verificar</button>
+  </form>
+  <p>Não recebeu? Verifique a caixa de spam ou solicite reenvio (a implementar).</p>
+{% endblock %}

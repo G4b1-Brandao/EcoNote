@@ -110,3 +110,13 @@ class ProfessorUpdateForm(forms.ModelForm):
         widgets = {
             'siape': forms.TextInput(attrs={'placeholder': 'Seu SIAPE'}),
         }
+
+# -------------------------
+# Form para verificar código
+# -------------------------
+class VerificationCodeForm(forms.Form):
+    code = forms.CharField(
+        max_length=10,
+        label="Código de verificação",
+        widget=forms.TextInput(attrs={'class': 'bloco-form-input', 'placeholder': 'Digite o código recebido por e-mail'})
+    )

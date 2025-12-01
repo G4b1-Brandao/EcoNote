@@ -93,13 +93,13 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # --- Configurações de Email ---
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'in-v3.mailjet.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-
-EMAIL_HOST_USER = 'econote.if@gmail.com'
-EMAIL_HOST_PASSWORD = 'ylcr qoza rfxj koqe'
+# user é api key e password é secret key da conta do mailjet
+EMAIL_HOST_USER = 'ef35951c6800ef326a98f24d1cd1f5be'
+EMAIL_HOST_PASSWORD = '29d792938ca56f6212a6cfb1c438c6cf'
 
 # O remetente padrão que aparece no email
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = 'econote.if@gmail.com'

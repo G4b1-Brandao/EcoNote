@@ -7,10 +7,18 @@ from django.views.decorators.http import require_POST
 from django.utils.timezone import localdate, now as timezone_now
 from django.db.models import Q
 from .models import PerfilUsuario, Aluno, Professor, Notebook, SolicitacaoNotebook, DevolucaoNotebook, EmprestimoNotebook, AvaliacaoAluno, Manutencao
-from .forms import NotebookForm, SolicitacaoNotebookForm, UserUpdateForm, AlunoUpdateForm, ProfessorUpdateForm
+from .forms import NotebookForm, SolicitacaoNotebookForm, UserUpdateForm, AlunoUpdateForm, ProfessorUpdateForm, VerificationCodeForm
 from django.db.models import Count, Avg, F, ExpressionWrapper, fields
 import datetime
+import requests
+import json
 
+# --- imports para envio de e-mail / geração de código ---
+from django.core.mail import send_mail
+from django.conf import settings
+import random
+from django.utils import timezone
+# ---------------------------------------------------------
 
 def is_aluno(user):
     return user.groups.filter(name='Aluno').exists()
@@ -29,6 +37,47 @@ def index(request):
         context['user_is_admin'] = is_admin(request.user)
 
     return render(request, 'projeto/index.html', context)
+
+def send_verification_email(perfil):
+    code = perfil.verification_code
+    if not code:
+        code = f"{random.randint(100000, 999999)}"
+        perfil.verification_code = code
+        perfil.verification_sent_at = timezone.now()
+        perfil.save()
+
+    url = "https://api.mailjet.com/v3.1/send"
+
+    data = {
+        "Messages": [
+            {
+                "From": {
+                    #o email precisa ser o meu pq eh o unico validado no mailjet pra enviar emails. nao consegui validar o econote.if@gmail.com
+                    "Email": "brunno.bandeira04@aluno.ifce.edu.br",
+                    "Name": "EcoNote"
+                },
+                "To": [
+                    {
+                        "Email": perfil.user.email,
+                        "Name": perfil.user.first_name
+                    }
+                ],
+                "Subject": "Seu código de verificação - EcoNote",
+                #textpart eh a mensagem do email, que vcs podem alterar dps.
+                "TextPart": f"Olá! Seu código de verificação é: {code}"
+            }
+        ]
+    }
+
+    response = requests.post(
+        url,
+        #o primeiro é a api key e o segundo a secret key, se nao to enganado
+        auth=('ef35951c6800ef326a98f24d1cd1f5be', '29d792938ca56f6212a6cfb1c438c6cf'),
+        data=json.dumps(data),
+        headers={'Content-Type': 'application/json'}
+    )
+
+    return response.status_code == 200 or response.status_code == 201
 
 def cadastrar_usuario(request):
     if request.method == 'POST':
@@ -58,9 +107,11 @@ def cadastrar_usuario(request):
             messages.error(request, 'Este e-mail já está cadastrado.')
             return redirect('cadastro')
 
+        # cria usuário
         user = User.objects.create_user(username=email, email=email, password=senha, first_name=nome)
         perfil = PerfilUsuario.objects.create(user=user, tipo_usuario=tipo_usuario)
 
+        # cria dados específicos de cada tipo
         if tipo_usuario == 'aluno':
             Aluno.objects.create(perfil=perfil, matricula=matricula, curso=curso)
             grupo, _ = Group.objects.get_or_create(name='Aluno')
@@ -69,8 +120,22 @@ def cadastrar_usuario(request):
             grupo, _ = Group.objects.get_or_create(name='Professor')
 
         user.groups.add(grupo)
-        messages.success(request, 'Cadastro realizado com sucesso!')
-        return redirect('login')
+
+        #gera código e envia e-mail de verificação
+        codigo = f"{random.randint(100000, 999999)}"
+        perfil.verification_code = codigo
+        perfil.verification_sent_at = timezone.now()
+        perfil.is_verified = False
+        perfil.save()
+
+        email_ok = send_verification_email(perfil)
+        if email_ok:
+            messages.success(request, 'Cadastro realizado com sucesso! Enviamos um código para o seu e-mail para verificação.')
+        else:
+            messages.warning(request, 'Cadastro realizado, mas houve um problema ao enviar o e-mail de verificação. Peça para reenviar a verificação na página de login.')
+
+        # redireciona para a página de verificação (Opção 1)
+        return redirect('verify_email', user_id=user.id)
 
     return render(request, 'projeto/cadastro.html')
 
@@ -82,7 +147,22 @@ def login_view(request):
         user = authenticate(request, username=email, password=senha)
 
         if user:
+
+            # PEGAR O PERFIL DO USUÁRIO
+            try:
+                perfil = user.perfilusuario
+            except PerfilUsuario.DoesNotExist:
+                messages.error(request, 'Perfil não encontrado. Contate o administrador.')
+                return redirect('login')
+
+            # BLOQUEAR LOGIN SE NÃO VERIFICOU O EMAIL
+            if not perfil.is_verified:
+                messages.error(request, 'Você precisa verificar seu e-mail antes de fazer login.')
+                return redirect('login')
+
+            # LOGIN NORMAL
             login(request, user)
+
             if user.is_superuser:
                 return redirect('home_ADM')
             elif is_aluno(user):
@@ -91,11 +171,45 @@ def login_view(request):
                 return redirect('home_professor')
             else:
                 messages.warning(request, 'Usuário sem grupo válido.')
+                return redirect('login')
+
         else:
             messages.error(request, 'Usuário ou senha incorretos.')
-        return redirect('login')
+            return redirect('login')
 
     return render(request, 'projeto/login.html')
+
+
+def verify_email(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    try:
+        perfil = user.perfilusuario
+    except PerfilUsuario.DoesNotExist:
+        messages.error(request, 'Perfil de usuário não encontrado.')
+        return redirect('login')
+
+    if request.method == 'POST':
+        form = VerificationCodeForm(request.POST)
+        if form.is_valid():
+            code = form.cleaned_data['code'].strip()
+            # checa se corresponde
+            if perfil.verification_code and perfil.verification_code == code:
+                perfil.is_verified = True
+                perfil.verification_code = ''
+                perfil.verification_sent_at = None
+                perfil.save()
+                messages.success(request, 'E-mail verificado com sucesso! Você já pode fazer login.')
+                return redirect('login')
+            else:
+                messages.error(request, 'Código inválido. Verifique o e-mail e tente novamente.')
+    else:
+        form = VerificationCodeForm()
+
+    return render(request, 'projeto/verificar_email.html', {
+        'form': form,
+        'user_obj': user,
+        'sent_at': perfil.verification_sent_at
+    })
 
 def logout_view(request):
     logout(request)

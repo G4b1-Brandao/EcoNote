@@ -13,6 +13,13 @@ class PerfilUsuario(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     tipo_usuario = models.CharField(max_length=20, choices=TIPO_USUARIO_CHOICES)
 
+    # --- campos de verificação de e-mail ---
+    verification_code = models.CharField(max_length=10, blank=True, null=True)
+    is_verified = models.BooleanField(default=False)
+    verification_sent_at = models.DateTimeField(null=True, blank=True)
+    # ---------------------------------------
+
+
     def __str__(self):
         return f"{self.user.get_full_name()} ({self.tipo_usuario})"
 
